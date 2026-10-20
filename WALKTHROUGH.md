@@ -27,7 +27,6 @@ src/
     JournalHeader.jsx      Masthead and daily title
     MonthCalendar.jsx      Month heading, calendar, legend, empty state
     EntryPreview.jsx       A populated photo/text/audio day
-    MobileEntryList.jsx    Readable entry summaries beneath a mobile calendar
     EntryViewer.jsx        Full entry, native dialog, keyboard navigation
     Waveform.jsx           Decorative amplitude bars shared by tile and viewer
     *.css                  Each component's styling and responsive rules
@@ -96,8 +95,8 @@ Padding cells are `null`, empty dates render neutral day numbers, and populated
 dates render `EntryPreview`.
 
 `EntryPreview` chooses its markup from `post.type`. On phones, the calendar cells
-use compact icons; `MobileEntryList` beneath each month gives readable excerpts.
-Both components report the clicked date through the same `onSelect` callback.
+use compact icons. Each populated tile reports its clicked date through the
+`onSelect` callback. The calendar is the only entry list on every screen size.
 
 ## 4. Following one click
 
@@ -144,7 +143,6 @@ in the viewer so the whole image remains visible.
 | Change title appearance | `src/components/JournalHeader.css` |
 | Change calendar spacing | `src/components/MonthCalendar.css` |
 | Change calendar entry previews | `src/components/EntryPreview.jsx` and `.css` |
-| Change mobile summaries | `src/components/MobileEntryList.jsx` and `.css` |
 | Change viewer behavior/appearance | `src/components/EntryViewer.jsx` and `.css` |
 
 Components receive their data through props. `App` gets its posts from

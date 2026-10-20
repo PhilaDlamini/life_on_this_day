@@ -1,4 +1,4 @@
-// Shared labels keep calendar tiles, mobile rows, and viewers consistent.
+// Shared labels keep calendar tiles and viewers consistent.
 export const entryTypes = {
   photo: "In light",
   text: "In words",

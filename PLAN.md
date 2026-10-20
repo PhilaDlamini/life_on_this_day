@@ -350,3 +350,11 @@ Released as commit a703cea; GitHub Pages run 39366877541 succeeded. The deployed
 Phila requested replacing the rotating title in the footer with
 “Phila Dlamini * 2026”. Keep the existing star styling and the line
 “A few things I didn't want to forget.” The masthead still rotates daily.
+
+
+## Remove duplicate mobile entries
+
+Phila found the list beneath each calendar redundant. Removed the mobile entry
+list and its unused component/styles. Populated calendar cells are the single
+entry point on all screen sizes; tapping one opens the existing viewer. This
+supersedes the earlier mobile summary-list design.

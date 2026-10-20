@@ -1,14 +1,13 @@
 import { Headphones, Image, Quote } from "lucide-react";
 import { entryTypes } from "../data/entryTypes.js";
 import EntryPreview from "./EntryPreview.jsx";
-import MobileEntryList from "./MobileEntryList.jsx";
 import { calendarDays, dateKey } from "../utils/calendar.js";
 import { monthFormat } from "../utils/formatDate.js";
 import "./MonthCalendar.css";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-// One month, including neutral empty days and its compact mobile entry list.
+// One month: populated days open an entry; empty days stay neutral.
 export default function MonthCalendar({ month, posts, entryDates, onSelect, loading = false }) {
   const monthKey = dateKey(month).slice(0, 7);
   const monthEntries = entryDates.filter((date) => date.startsWith(monthKey));
@@ -55,9 +54,6 @@ export default function MonthCalendar({ month, posts, entryDates, onSelect, load
           <span><Headphones size={13} /> {entryTypes.audio}</span>
         </div>
       </div>
-      {monthEntries.length > 0 && (
-        <MobileEntryList month={month} dates={monthEntries} posts={posts} onSelect={onSelect} />
-      )}
     </section>
   );
 }
