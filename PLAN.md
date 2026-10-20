@@ -340,3 +340,6 @@ cells measure 50×50px and 40×40px respectively, without horizontal overflow.
 The real photo remains uncropped in the rounded viewer; the owner editor blocks
 its occupied date. Database and Storage rules deployed successfully to
 lifeonthisday-4d69a. No production test entry was submitted.
+
+Released as commit a703cea; GitHub Pages run 39366877541 succeeded. The deployed
+390px calendar was verified at 50×50px per cell with the original photo present.
