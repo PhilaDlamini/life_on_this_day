@@ -3,7 +3,6 @@ import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { assertFails, assertSucceeds, initializeTestEnvironment } from "@firebase/rules-unit-testing";
 import { deleteObject, getBytes, listAll, ref as storageRef, uploadBytes } from "firebase/storage";
-import { commitPost } from "../src/firebase/publish.js";
 import { get, ref, set, update } from "firebase/database";
 
 // Ordinary npm test stays offline. The dedicated rules command starts the emulator.
@@ -16,7 +15,7 @@ const rulesTest = (name, fn) => test(name, { skip: !enabled }, fn);
 before(async () => {
   if (!enabled) return;
   const source = await readFile(new URL("../database.rules.json", import.meta.url), "utf8");
-  const configuredOwner = JSON.parse(source).rules.posts.$date[".write"].match(/auth.uid === '([^']+)'/)[1];
+  const configuredOwner = "sieqz9C2ZGW9xrMKlhgj0jO543X2";
   const rules = source.replaceAll(configuredOwner, ownerUID);
   const storageRules = (await readFile(new URL("../storage.rules", import.meta.url), "utf8")).replaceAll(configuredOwner, ownerUID);
   environment = await initializeTestEnvironment({ projectId: "demo-life-on-this-day", database: { rules }, storage: { rules: storageRules } });
@@ -47,13 +46,13 @@ rulesTest("visitors and another Google user cannot write or delete entries", asy
   }
 });
 
-rulesTest("the verified Google owner can save each supported format", async () => {
+rulesTest("direct client writes are denied even for the verified owner on an empty date", async () => {
   const database = environment.authenticatedContext(ownerUID, ownerToken).database();
-  for (const [date, post] of Object.entries({
-    "2026-10-15": { type: "text", text: "Words." },
-    "2026-10-16": { type: "photo", photoURL: "https://example.com/photo.jpg", alt: "Light." },
-    "2026-10-17": { type: "audio", audioURL: "https://example.com/memo.m4a", duration: 12 },
-  })) await assertSucceeds(set(ref(database, `posts/${date}`), post));
+  for (const post of [
+    { type: "text", text: "Words." },
+    { type: "photo", photoURL: "https://example.com/photo.jpg", alt: "Light." },
+    { type: "audio", audioURL: "https://example.com/memo.m4a", duration: 12 },
+  ]) await assertFails(set(ref(database, "posts/2026-10-17"), post));
 });
 
 rulesTest("the owner cannot write combined formats, unknown fields, bad keys, or unsafe URLs", async () => {
@@ -88,14 +87,6 @@ rulesTest("drafts and configuration remain inaccessible even to the owner in thi
 });
 
 
-rulesTest("publishing seals an empty date and rejects a second entry", async () => {
-  const database = environment.authenticatedContext(ownerUID, ownerToken).database();
-  const original = { type: "text", text: "First entry." };
-  await commitPost(database, "2026-10-23", original);
-  await assert.rejects(commitPost(database, "2026-10-23", { type: "text", text: "Revised." }), /already has an entry/);
-  assert.deepEqual((await get(ref(database, "posts/2026-10-23"))).val(), original);
-});
-
 rulesTest("the owner cannot change, replace, or delete a published moment, including nested writes", async () => {
   const database = environment.authenticatedContext(ownerUID, ownerToken).database();
   const entry = ref(database, "posts/2026-10-18");
@@ -109,24 +100,6 @@ rulesTest("the owner cannot change, replace, or delete a published moment, inclu
   await assertFails(set(ref(database, "posts"), {}));
   assert.deepEqual((await get(entry)).val(), original);
 });
-
-rulesTest("concurrent publishers can keep only one moment for a date", async () => {
-  const first = environment.authenticatedContext(ownerUID, ownerToken).database();
-  const second = environment.authenticatedContext(ownerUID, ownerToken).database();
-  const results = await Promise.allSettled([
-    commitPost(first, "2026-10-25", { type: "text", text: "First device." }),
-    commitPost(second, "2026-10-25", { type: "text", text: "Second device." }),
-  ]);
-  assert.equal(results.filter((result) => result.status === "fulfilled").length, 1);
-  assert.ok(["First device.", "Second device."].includes((await get(ref(first, "posts/2026-10-25/text"))).val()));
-});
-
-rulesTest("failed validation leaves a new date empty", async () => {
-  const database = environment.authenticatedContext(ownerUID, ownerToken).database();
-  await assert.rejects(commitPost(database, "2026-10-24", { type: "audio", audioURL: "https://example.com/memo.m4a", duration: 61 }));
-  assert.equal((await get(ref(database, "posts/2026-10-24"))).val(), null);
-});
-
 
 rulesTest("Storage allows owner uploads and public downloads, but no deletion even by the owner", async () => {
   const path = "published/2026-10-18/test-upload/photo.jpg";

@@ -6,7 +6,8 @@ import EntryViewer from "./components/EntryViewer.jsx";
 import OwnerAccess from "./components/OwnerAccess.jsx";
 import useOwnerAuth from "./hooks/useOwnerAuth.js";
 import useArchive from "./hooks/useArchive.js";
-import { archiveMonths, dateKey } from "./utils/calendar.js";
+import { journalDay } from "../functions/shared/journalDay.js";
+import { archiveMonths, dateFromKey, dateKey } from "./utils/calendar.js";
 import { dailyTitle } from "./utils/dailyTitle.js";
 
 const EntryEditor = lazy(() => import("./components/editor/EntryEditor.jsx"));
@@ -15,11 +16,11 @@ const EntryEditor = lazy(() => import("./components/editor/EntryEditor.jsx"));
 export default function App() {
   const { posts, loading, error, retry } = useArchive();
   const ownerAuth = useOwnerAuth();
-  const [editorDate, setEditorDate] = useState(null);
+  const [editorOpen, setEditorOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const title = dailyTitle();
-  const months = archiveMonths(posts);
+  const months = archiveMonths(posts, dateFromKey(journalDay()));
   const entryDates = Object.keys(posts).sort();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function App() {
       <a className="skip-link" href="#calendar">Skip to calendar</a>
       <div className="journal">
         <JournalHeader title={title}>
-          <OwnerAccess auth={ownerAuth} canPublish={!loading && !error} onNewEntry={() => setEditorDate(dateKey(new Date()))} />
+          <OwnerAccess auth={ownerAuth} canPublish={!loading && !error} onNewEntry={() => setEditorOpen(true)} />
         </JournalHeader>
         <main>
           {notice && <p className="archive-status" role="status">{notice}</p>}
@@ -67,14 +68,13 @@ export default function App() {
         selectedDate={selectedDate}
         onSelect={setSelectedDate}
       />
-      {ownerAuth.isOwner && editorDate && (
+      {ownerAuth.isOwner && editorOpen && (
         <Suspense fallback={<p className="archive-status" role="status">Opening editor…</p>}>
           <EntryEditor
-            initialDate={editorDate}
             posts={posts}
-            onClose={() => setEditorDate(null)}
+            onClose={() => setEditorOpen(false)}
             onPublished={(date) => {
-              setEditorDate(null);
+              setEditorOpen(false);
               setNotice(`Kept for ${date}.`);
               retry();
             }}

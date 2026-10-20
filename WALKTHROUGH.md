@@ -69,7 +69,7 @@ renders; there is no background midnight timer.
 
 `JournalHeader` receives the title as a prop and renders the last word in the
 original italic accent. An effect in `App` sets the browser tab title. The footer
-receives the same value directly from `App`.
+shows “Phila Dlamini * 2026” alongside the existing personal tagline.
 
 An entry is keyed by its date, with one format:
 
@@ -158,9 +158,9 @@ No router or shared authentication context is needed for this one screen.
 
 ## Verification
 
-`npm test` runs thirteen focused offline tests using Node's built-in runner.
+`npm test` runs seventeen focused offline tests using Node's built-in runner.
 The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
-leap years, six-week grids, daily title stability, and remote entry validation. Twelve rule tests are skipped
+leap years, six-week grids, daily title stability, and remote entry validation. Eleven emulator tests are skipped
 unless the emulator is running. Run under a timezone such
 as `TZ=America/Los_Angeles npm test` to exercise daylight-saving boundaries.
 
@@ -205,21 +205,28 @@ fresh canvas removes original image metadata. Audio is decoded locally to check
 its actual duration and build decorative waveform bars. File preparation never
 publishes anything; the preview uses local object URLs, revoked on cleanup.
 
-On Publish, `saveEntry.js` uploads new media to unique Storage paths first. It
-then calls `commitPost` to save the post using a Realtime Database transaction.
-The transaction creates only if the date is empty, so two devices cannot publish
-to the same day. A temporary listener keeps the SDK cache populated during the
-transaction. Published entries and media cannot be changed or deleted, including
-by the owner through the client SDK. Failed saves retain the form; interrupted
-media publications may leave unreferenced files for administrator cleanup.
+The editor has no date picker. `useToday` follows the current Pacific date and
+updates an editor left open overnight without discarding its draft. The same
+`functions/shared/journalDay.js` helper supplies the browser and server's IANA
+timezone calculation, including daylight saving.
 
-`storage.rules` restricts writes to the owner, size/type limits, and unique object
-paths, denying replacement and deletion. `database.rules.json` allows creation
-only on empty dates and validates one matching format, optional photo
-thumbnail/alt text, and audio duration/waveform. Browser duration checking is not
-a server audio decoder: rule tests check duration metadata while Storage caps
-bytes and MIME types. This keeps the core workflow free of Cloud Functions.
+On Publish, `saveEntry.js` uploads media to unique Storage paths, then
+`src/firebase/publish.js` calls the Firebase callable `publishEntry`. The SDK
+includes the signed-in owner's ID token. All direct client database writes are
+denied, so changing browser code cannot bypass the publishing policy.
 
-`onPublished` closes the editor and refreshes archive discovery, so a backdated
-post in a previously empty month appears immediately. The form's date chooses
-where a new moment is kept; existing moments remain final.
+`functions/index.js` is the Firebase adapter: verified authentication context,
+Admin SDK transaction, and callable error responses. `functions/publishMoment.js`
+applies the owner, current-day, and content rules; its dependencies are injected
+for focused offline tests. `functions/shared/posts.js` validates content for both
+the reader and privileged writer. The server clock decides today's Pacific key,
+and the transaction rejects an occupied day or a midnight rollover.
+
+Failed saves retain the form. Published entries and media cannot be edited or
+deleted through the app. Interrupted media publications may leave unreferenced
+files requiring administrator cleanup. Storage still checks size/type limits;
+audio duration is decoded in the editor and validated as metadata by the server.
+
+`onPublished` closes the editor and refreshes the archive. The next moment can
+be published after the next Pacific midnight. A new callable function release
+requires its own scoped Firebase deployment, separate from GitHub Pages.

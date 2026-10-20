@@ -7,10 +7,12 @@ explains the components and data flow.
 
 Published site: **https://philadlamini.github.io/life_on_this_day/**
 
-Sign in with your owner Google account, choose **Add an entry**, select a date and
-one format, preview, then **Publish**. Confirm that the moment is final: published
-entries cannot be edited, replaced, or deleted. Choose an empty date to keep
-another moment. Failed saves retain the form and leave existing entries intact.
+Sign in with your owner Google account, choose **Add an entry**, choose one format,
+preview, then **Publish**. Today is selected automatically using Los Angeles /
+Pacific time, including daylight saving; there is no date picker. Confirm that
+the moment is final: published entries cannot be edited, replaced, or deleted.
+Only one moment can be kept per Pacific calendar day. Return tomorrow to keep
+another. Failed saves retain the form and leave existing entries intact.
 
 - **In words:** up to 20,000 characters.
 - **In light:** choose a photo up to 20 MB. The browser resizes it to at most
@@ -27,9 +29,11 @@ entries, stable while browsing and reshuffled when reopening/refreshing.
 
 Visitors read without signing in. Entries and media are public when published.
 Private drafts and an export tool remain later work. A one-minute
-limit is enforced by the owner editor's decoded-audio check and database duration
+limit is enforced by the owner editor's decoded-audio check and publishing function's duration
 validation; Storage rules enforce file size/type and cannot independently decode
-an audio file to verify its claimed duration. No Cloud Functions are involved.
+an audio file to verify its claimed duration. A callable Firebase function
+enforces the current Pacific date, owner identity,
+content validation, and create-only publishing using the server clock.
 
 ```sh
 npm install
@@ -47,29 +51,32 @@ base path; local development uses `/`.
 - Database: `https://lifeonthisday-4d69a-default-rtdb.firebaseio.com` (`us-central1`).
 - Owner Firebase UID `sieqz9C2ZGW9xrMKlhgj0jO543X2`.
 - `src/firebase/config.js` contains the public SDK configuration and owner UID.
-- `database.rules.json` enforces the same UID, verified email, and Google provider.
+- `database.rules.json` denies all direct client writes. The publishing function
+  checks the owner UID, verified email, and Google provider.
 - Google Authentication is enabled. The app does not use Email/Password or Analytics.
 - Firebase Storage is enabled on Blaze. `storage.rules` restricts uploads to the
   verified Google owner, with public downloads only under `published/`. Listing,
   private paths, overwriting existing objects, and deletion are denied.
 
 The client owner check controls UI. Database rules enforce permissions independently.
-Only `/posts` is publicly readable; root reads and drafts are denied. Entry writes
-require an empty date, the owner, and a single matching text/photo/audio payload. Dates must have
-an ISO-shaped key; the reader also checks that they represent real calendar dates.
-Unknown fields and mixed formats are rejected. Updates, nested changes, and
-deletion are denied even for the owner. Console/admin access bypasses client
+Only `/posts` is publicly readable; root reads and drafts are denied. The
+`publishEntry` function derives today from server time in `America/Los_Angeles`,
+rejects other dates, validates one matching content format, and uses an atomic
+transaction that creates only if today is empty. Client and server share content
+validation from `functions/shared/`; unknown fields and mixed formats are
+rejected. Updates, nested changes, and deletion are denied even for the owner. Console/admin access bypasses client
 rules; it can still perform deliberate administrative changes. Failed/interrupted
 media publication may leave unreferenced files requiring administrator cleanup.
 
 To deliberately release a reviewed database-rule change, scope the CLI command:
 
 ```sh
+firebase deploy --only functions:journal --project lifeonthisday-4d69a
 firebase deploy --only database,storage --project lifeonthisday-4d69a
 ```
 
-This releases database and Storage rules, not the website. Do not upload the sample diary to
-the production database. Avoid unscoped deploy commands.
+These release the publishing function and database/Storage rules, not the
+website. Do not upload the sample diary to the production database. Avoid unscoped deploy commands.
 
 ## Reading and authentication
 
@@ -87,22 +94,23 @@ Firebase Auth session. Basic flow follows the official
 
 ## Checks
 
-`npm test` runs thirteen offline date/content/media-limit/highlight tests. Emulator-only rule tests are
+`npm test` runs seventeen offline date/content/media-limit/highlight/publishing tests. Emulator-only rule tests are
 explicitly skipped in that command. With Firebase CLI and Java 21+ on PATH, run:
 
 ```sh
+npm ci --prefix functions
 npm run test:rules
 ```
 
-This starts a database and Storage emulators under **demo-life-on-this-day** and runs twelve
-permission/schema/publishing tests. All writes in these tests target the emulator, never
+This starts Auth, Functions, Database, and Storage emulators under
+**demo-life-on-this-day** and runs eleven permission/publishing tests. All writes in these tests target the emulator, never
 the live journal. Coverage includes public reads, denied private/root reads,
-unauthorized writes/deletes, valid owner writes, malformed payloads, and denied
-unverified or non-Google owner sessions. See Firebase's
+denied direct writes/deletes, callable authentication, malformed payloads,
+backdated/future requests, and concurrent submissions that keep only one entry. See Firebase's
 [rules testing guide](https://firebase.google.com/docs/rules/unit-tests).
 
 For manually using local emulators, copy `.env.example` to `.env.local`, set
-`VITE_USE_FIREBASE_EMULATORS=true`, start `firebase emulators:start --only auth,database,storage`,
+`VITE_USE_FIREBASE_EMULATORS=true`, start `firebase emulators:start --only auth,functions,database,storage`,
 and restart Vite. That namespace is separate from the test runner's demo namespace.
 Remove the flag afterward. Production builds ignore the emulator flag.
 
@@ -114,6 +122,8 @@ Remove the flag afterward. Production builds ignore the emulator flag.
 - `src/hooks/`: archive loading and owner authentication state.
 - `src/firebase/`: SDK configuration, reads, Google sign-in, transactional saves,
   upload progress, and create-only publishing.
+- `functions/`: authenticated server publishing; `shared/` holds the Pacific
+  day calculation, owner UID, and content validation used by both browser and server.
 - `src/data/`: title options, entry labels, and retained sample fixtures.
 - `src/utils/`: local calendar, title, date-formatting, and remote-entry validation.
 - `src/styles.css`: global theme, layout, and accessible controls.

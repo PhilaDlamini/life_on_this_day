@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'functions/shared/**'
       - 'public/**'
       - 'package*.json'
       - 'index.html'

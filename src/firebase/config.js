@@ -1,3 +1,4 @@
+import { OWNER_UID } from "../../functions/shared/journalDay.js";
 import { initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
@@ -16,8 +17,8 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);
-// Public identifier for Phila’s verified Google account; rules enforce the same UID.
-export const ownerUID = "sieqz9C2ZGW9xrMKlhgj0jO543X2";
+// Public owner identifier, shared with the publisher and enforced by Storage rules.
+export const ownerUID = OWNER_UID;
 export const useEmulators = import.meta.env.DEV
   && import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true";
 

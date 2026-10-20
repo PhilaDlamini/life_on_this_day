@@ -8,7 +8,8 @@ daily posting obligation, streak, engagement score, or requirement to photograph
 other people. An ordinary day is worth keeping.
 
 Each local calendar date has at most one entry: a photo OR text OR an audio memo.
-Formats are never combined. Dates are editable for backdated posts. The date,
+Formats are never combined. The current Pacific date is selected automatically;
+backdated and future publication are not allowed. The date,
 formatted YYYY-MM-DD, is the entry's database key; do not derive a local day from
 UTC using toISOString(). Published entries are final: no editing, format
 replacement, or deletion through the app or client SDK. A selected photo may have accessibility alt text, not a separate
@@ -31,7 +32,8 @@ This is a separate project from ../pbj-auction; do not change the auction app.
   account profiles, user-management features, or manually maintained secret token.
 - GitHub Pages for the React website; media remains in Firebase.
 - Firebase Analytics is optional and omitted initially.
-- No Cloud Functions are required for the initial core workflow.
+- One callable Firebase function enforces owner-only publishing for the current
+  Pacific day; all direct client database writes are denied.
 
 ## Firebase Project Provided by Phila
 
@@ -378,3 +380,32 @@ subtitle's muted sans-serif styling, 14px on larger screens and 12px on phones.
 
 Phila requested vertically centering the footer asterisk between the name and
 year. Lower the raised glyph by 3px while preserving its rust color and spacing.
+
+
+## Today-only publishing — October 19, 2026
+
+Phila requested removing date selection and allowing only one final entry for
+today. Phila selected Los Angeles / Pacific time (`America/Los_Angeles`) as the
+fixed journal timezone. This supersedes all earlier backdating/date-selection
+plans. The owner editor shows a read-only Today/date line, updates over midnight,
+and blocks an occupied day with “Today’s moment is already kept.”
+
+Realtime Database rules cannot derive a timezone-aware civil date from server
+time. A small Node 24 callable `publishEntry` now applies that policy using its
+server clock. It verifies the Google owner UID and email, validates content,
+rejects backdated/future keys, and creates only on an empty day atomically. The
+transaction rechecks the day across retries. All direct client database writes
+are denied. Content validation and Pacific day calculation are shared between
+browser and server under functions/shared; the server adapter and publishing
+policy remain small separate modules. Existing entries are untouched.
+
+Function configuration: us-central1, zero minimum instances, one maximum
+instance, 128 MiB, fractional CPU, and a 30-second timeout. Blaze was already
+enabled. Storage permissions and file limits remain unchanged. Calendar month
+discovery also follows Pacific time so travel cannot hide today's month.
+
+Verification: seventeen offline tests pass, including Pacific midnight, DST,
+authorization, date policy, and all formats. Eleven emulator tests pass, including
+real callable requests, rejection of direct owner writes, and concurrent
+submissions that keep exactly one moment. Production build passes. No test entry
+or media was published to the live diary.

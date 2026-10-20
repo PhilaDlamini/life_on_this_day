@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { entryTypes } from "../../data/entryTypes.js";
-import { dateKey } from "../../utils/calendar.js";
+import { journalDay } from "../../../functions/shared/journalDay.js";
+import useToday from "../../hooks/useToday.js";
+import { dateFromKey } from "../../utils/calendar.js";
+import { dateFormat } from "../../utils/formatDate.js";
 import { prepareAudio, preparePhoto } from "../../utils/prepareMedia.js";
 import { saveEntry } from "../../firebase/saveEntry.js";
 import Waveform from "../Waveform.jsx";
 import "./EntryEditor.css";
 
 // Local form state survives a failed save. Nothing is published until Publish is pressed.
-export default function EntryEditor({ initialDate, posts, onClose, onPublished }) {
+export default function EntryEditor({ posts, onClose, onPublished }) {
   const dialog = useRef(null);
   const preparation = useRef(0);
-  const [date, setDate] = useState(initialDate);
+  const date = useToday();
   const [type, setType] = useState("text");
   const [text, setText] = useState("");
   const [alt, setAlt] = useState("");
@@ -71,17 +74,18 @@ export default function EntryEditor({ initialDate, posts, onClose, onPublished }
     event.preventDefault();
     if (busy || occupied) return;
     setError("");
+    if (date !== journalDay()) { setError("A new Pacific day has begun. Review your draft, then try again."); return; }
     if (type === "text" && !text.trim()) { setError("Write something before publishing."); return; }
     if (type !== "text" && !media) { setError("Choose a file before publishing."); return; }
     if (!window.confirm(`Keep this moment for ${date}? Once published, it cannot be edited or deleted.`)) return;
     setSaving(true);
     try {
-      await saveEntry({ date, type, text, alt, media, onProgress: setProgress });
-      onPublished(date);
+      const publishedDate = await saveEntry({ date, type, text, alt, media, onProgress: setProgress });
+      onPublished(publishedDate);
     } catch (error) {
-      setError(error.code
-        ? "The entry could not be saved. Your input is still here—check your connection and try again."
-        : error.message);
+      setError(["functions/already-exists", "functions/failed-precondition", "functions/invalid-argument", "functions/permission-denied"].includes(error.code)
+        ? error.message
+        : error.code ? "The entry could not be saved. Your input is still here—check your connection and try again." : error.message);
     } finally {
       setSaving(false);
       setProgress("");
@@ -99,10 +103,8 @@ export default function EntryEditor({ initialDate, posts, onClose, onPublished }
       </header>
       <form onSubmit={publish}>
         <fieldset disabled={busy} className="editor-fields">
-          <label className="editor-label">Date
-            <input type="date" required value={date} max={dateKey(new Date())} onChange={(event) => setDate(event.target.value)} />
-          </label>
-          {occupied ? <p className="editor-hint" role="status">This date already holds a moment. It is final—choose another date.</p> : <>
+          <p className="editor-date">Today · <time dateTime={date}>{dateFormat.format(dateFromKey(date))}</time> · Pacific time</p>
+          {occupied ? <p className="editor-hint" role="status">Today’s moment is already kept. Come back tomorrow for another.</p> : <>
             <div className="editor-formats" role="group" aria-label="Entry format">
               {Object.entries(entryTypes).map(([value, label]) => (
                 <button key={value} type="button" aria-pressed={type === value} onClick={() => changeType(value)}>{label}</button>

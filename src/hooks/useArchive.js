@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getArchiveDates, subscribeToMonth } from "../firebase/database.js";
-import { archiveMonths, dateKey } from "../utils/calendar.js";
+import { journalDay } from "../../functions/shared/journalDay.js";
+import { archiveMonths, dateFromKey, dateKey } from "../utils/calendar.js";
 
 // Own the read lifecycle; calendar components remain independent of Firebase.
 export default function useArchive() {
@@ -27,7 +28,7 @@ export default function useArchive() {
         const dates = await getArchiveDates(controller.signal);
         if (!active) return;
         const dateMap = Object.fromEntries(dates.map((date) => [date, true]));
-        const months = archiveMonths(dateMap).map((month) => dateKey(month).slice(0, 7));
+        const months = archiveMonths(dateMap, dateFromKey(journalDay())).map((month) => dateKey(month).slice(0, 7));
         const pending = new Set(months);
         setPosts({});
 

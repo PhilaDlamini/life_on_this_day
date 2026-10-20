@@ -18,9 +18,23 @@
     "storage": {
       "host": "127.0.0.1",
       "port": 9199
+    },
+    "functions": {
+      "host": "127.0.0.1",
+      "port": 5001
     }
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "functions": {
+    "source": "functions",
+    "codebase": "journal",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "*.log"
+    ],
+    "runtime": "nodejs24"
   }
 }
