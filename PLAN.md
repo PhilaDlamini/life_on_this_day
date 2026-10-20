@@ -280,3 +280,19 @@ The initial repository push and Pages workflow are being prepared. Target site:
 https://philadlamini.github.io/life_on_this_day/. That domain and local 127.0.0.1
 were added to Firebase Authentication's authorized domains. Git commits use
 Phila's GitHub noreply address. Public Firebase identifiers are not credentials.
+
+## Release Verified — October 19, 2026
+
+Code committed and pushed to main in the approved public repository. GitHub Pages
+workflow run 39364928173 completed successfully (install, offline tests, build,
+and Pages deployment). Production site verified at:
+https://philadlamini.github.io/life_on_this_day/
+
+The production calendar loads the real empty database, Google sign-in succeeds
+for the owner, and Add an entry opens the editor from its separate production
+bundle. Sign-in needed a retry once after a transient network error. Media/date
+validation, transactions, and storage limits were verified locally and in the
+emulators; no fictional entry or test media was published to the live diary.
+Database and permanent Storage rules are released. The next action is Phila's
+first real entry, through the deployed owner editor. No website approval or
+billing step is still pending for this release.
