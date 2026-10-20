@@ -1,16 +1,17 @@
 .editor-dialog {
-  width: min(640px, calc(100% - 24px));
+  width: min(660px, calc(100% - 24px));
   max-height: calc(100dvh - 24px);
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 34px 38px;
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 24px 90px rgb(42 30 24 / 18%);
   color: inherit;
-  background: #fafbf9;
+  background: #fffdf9;
   overflow: auto;
 }
 
 .editor-dialog::backdrop {
-  background: rgb(21 29 26 / 55%);
+  background: rgb(42 35 30 / 42%);
   backdrop-filter: blur(3px);
 }
 
@@ -22,13 +23,13 @@
 }
 
 .editor-header {
-  margin-bottom: 24px;
+  margin-bottom: 30px;
 }
 
 .editor-header h2 {
   margin: 0;
   font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 400;
 }
 
@@ -42,18 +43,20 @@
 .editor-label {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 18px;
+  gap: 10px;
+  margin-bottom: 22px;
   font-size: 12px;
+  color: var(--muted);
 }
 
 .editor-label input, .editor-label textarea {
   width: 100%;
   min-width: 0;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  background: white;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid #e8dfd7;
+  border-radius: 0;
+  background: transparent;
   color: #111;
   font: inherit;
   font-size: 16px;
@@ -61,12 +64,13 @@
 
 .editor-label textarea {
   resize: vertical;
-  line-height: 1.6;
+  min-height: 180px;
+  line-height: 1.7;
 }
 
 .editor-label input:focus-visible, .editor-label textarea:focus-visible {
   outline: 2px solid var(--red);
-  outline-offset: 2px;
+  outline-offset: 5px;
 }
 
 .editor-label input[type='file'] {
@@ -75,23 +79,25 @@
 
 .editor-formats {
   display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
+  gap: 24px;
+  margin: 8px 0 28px;
+  border-bottom: 1px solid #e8dfd7;
 }
 
 .editor-formats button {
-  flex: 1;
-  padding: 10px 4px;
-  border: 1px solid var(--line);
+  padding: 10px 0 13px;
+  border: 0;
+  border-bottom: 2px solid transparent;
   background: transparent;
-  border-radius: 3px;
-  font-size: 12px;
+  border-radius: 0;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: -1px;
 }
 
 .editor-formats button[aria-pressed='true'] {
-  background: #292d2b;
-  color: white;
-  border-color: #292d2b;
+  color: var(--red);
+  border-bottom-color: var(--red);
 }
 
 .editor-hint {
@@ -143,8 +149,7 @@
 
 .editor-footer {
   margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
+  padding-top: 8px;
 }
 
 .editor-footer > span {
@@ -154,19 +159,19 @@
 
 .publish-button {
   border: 0;
-  border-radius: 3px;
-  padding: 12px 22px;
-  background: var(--green);
+  border-radius: 999px;
+  padding: 12px 26px;
+  background: var(--red);
   color: white;
 }
 
 @media (max-width: 600px) {
   .editor-dialog {
-    padding: 18px;
+    padding: 24px;
   }
 
   .editor-header h2 {
-    font-size: 28px;
+    font-size: 32px;
   }
 }
 
@@ -176,4 +181,52 @@
   font-weight: 400;
   text-transform: uppercase;
   margin: 18px 0 10px;
+}
+
+.editor-header h2 em {
+  color: var(--red);
+  font-weight: 400;
+}
+
+.editor-header .icon-button {
+  border-radius: 50%;
+}
+
+.editor-label:has(input[type='date']) {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 18px;
+}
+
+.editor-label input[type='date'] {
+  width: auto;
+  max-width: calc(100% - 50px);
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.editor-label textarea::placeholder {
+  color: #a39c94;
+}
+
+.editor-label input[type='file']::file-selector-button {
+  margin-right: 12px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #f7e9e2;
+  color: #9c3b2b;
+  font: inherit;
+  cursor: pointer;
+}
+
+.editor-formats button:hover:not(:disabled),
+.publish-button:hover:not(:disabled) {
+  filter: brightness(.9);
+}
+
+@media (max-width: 359px) {
+  .editor-dialog { padding: 22px 18px; }
+  .editor-formats { gap: 20px; }
+  .editor-formats button { font-size: 12px; }
 }

@@ -296,3 +296,12 @@ emulators; no fictional entry or test media was published to the live diary.
 Database and permanent Storage rules are released. The next action is Phila's
 first real entry, through the deployed owner editor. No website approval or
 billing step is still pending for this release.
+
+
+## Editor style revision
+
+Phila requested a less boxy editor using the warm rust accent from the title.
+The editor now uses an open writing area, understated date/input underlines,
+text tabs with a rust selection underline, a softer paper-colored dialog, an
+italic rust heading accent, and a rounded rust Publish button. Upload and save
+behavior is unchanged.
