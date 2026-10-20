@@ -372,3 +372,9 @@ The old per-month exhaustive mobile lists remain removed.
 
 Phila requested a quieter “From the archive” label: match the introduction
 subtitle's muted sans-serif styling, 14px on larger screens and 12px on phones.
+
+
+## Footer star alignment
+
+Phila requested vertically centering the footer asterisk between the name and
+year. Lower the raised glyph by 3px while preserving its rust color and spacing.
