@@ -97,7 +97,7 @@ export default function EntryEditor({ initialDate, posts, onClose, onPublished }
       if (!busy) onClose();
     }}>
       <header className="editor-header">
-        <h2 id="editor-title">A moment to <em>keep.</em></h2>
+        <h2 id="editor-title">A moment to keep.</h2>
         <button className="icon-button" aria-label="Close editor" disabled={busy} onClick={onClose}><X size={21} /></button>
       </header>
       <form onSubmit={publish}>

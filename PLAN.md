@@ -305,3 +305,10 @@ The editor now uses an open writing area, understated date/input underlines,
 text tabs with a rust selection underline, a softer paper-colored dialog, an
 italic rust heading accent, and a rounded rust Publish button. Upload and save
 behavior is unchanged.
+
+
+## Editor color refinement
+
+After publishing the first real entry, Phila requested the editor heading entirely
+black and upright, with the green Publish button restored. Rust remains the
+accent for selected format tabs and focus indicators.
