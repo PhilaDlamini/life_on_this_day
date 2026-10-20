@@ -414,3 +414,10 @@ Release: callable publishEntry and deny-all client database writes deployed
 successfully. Live unauthenticated callable requests return permission denied.
 Commit a5a2939 pushed; Pages run 39368918957 succeeded. Function build images
 receive a one-day Artifact Registry cleanup policy; diary media is unaffected.
+
+
+## Calendar line contrast
+
+Phila requested slightly darker calendar lines while keeping the quiet
+gray-green tone. The grid now uses its own #bcc4b9 line color; shared page
+dividers retain their existing styling.

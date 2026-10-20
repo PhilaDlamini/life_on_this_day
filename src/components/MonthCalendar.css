@@ -44,11 +44,12 @@
 }
 
 .day-grid {
+  --calendar-line: #bcc4b9;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  background: var(--calendar-line);
+  border: 1px solid var(--calendar-line);
 }
 
 .calendar-caption {
