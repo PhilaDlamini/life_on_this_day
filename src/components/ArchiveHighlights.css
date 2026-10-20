@@ -4,8 +4,9 @@
 
 .archive-highlights h2 {
   margin: 0 0 16px;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 27px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--muted);
   font-weight: 400;
 }
 
@@ -82,4 +83,8 @@
 .highlight-row > svg {
   color: var(--muted);
   flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .archive-highlights h2 { font-size: 12px; }
 }

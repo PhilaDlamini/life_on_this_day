@@ -369,3 +369,6 @@ repeats; keep the selection stable while browsing, and reshuffle on reopening
 or refreshing. Fewer than five entries means showing the available entries;
 an empty archive has no highlight section. Each row opens the existing viewer.
 The old per-month exhaustive mobile lists remain removed.
+
+Phila requested a quieter “From the archive” label: match the introduction
+subtitle's muted sans-serif styling, 14px on larger screens and 12px on phones.
