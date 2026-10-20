@@ -19,9 +19,9 @@ service firebase.storage {
         || (fileName == 'recording' && request.resource.contentType.matches('audio/.*')
           && request.resource.size <= 5 * 1024 * 1024)
       );
-      // Uploads use unique IDs. Existing objects are never overwritten in place.
+      // A kept moment includes its files: neither replacement nor deletion is allowed.
       allow update: if false;
-      allow delete: if isOwner();
+      allow delete: if false;
     }
     match /{other=**} { allow read, write: if false; }
   }

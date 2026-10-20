@@ -10,8 +10,8 @@ other people. An ordinary day is worth keeping.
 Each local calendar date has at most one entry: a photo OR text OR an audio memo.
 Formats are never combined. Dates are editable for backdated posts. The date,
 formatted YYYY-MM-DD, is the entry's database key; do not derive a local day from
-UTC using toISOString(). A format change replaces the previous entry after
-confirmation. A selected photo may have accessibility alt text, not a separate
+UTC using toISOString(). Published entries are final: no editing, format
+replacement, or deletion through the app or client SDK. A selected photo may have accessibility alt text, not a separate
 written diary entry.
 
 ## Working Agreement
@@ -84,8 +84,8 @@ format, add content, preview, publish. Photo and audio use the native file picke
 Start with uploaded audio recordings; direct microphone recording is a later
 optional feature, not part of the first version.
 
-Existing entries can be edited. Deletion and format replacement require
-confirmation. Add private drafts separately after core publishing works. Draft
+Publishing asks for final confirmation. Existing dates cannot be edited,
+replaced, or deleted, even by the owner. Add private drafts separately after core publishing works. Draft
 records AND draft media must stay inaccessible to public viewers.
 
 ## Database Shape
@@ -109,7 +109,7 @@ drafts, when implemented, use drafts/{ownerUID}/{date} and owner-only media path
 - Upload a photo/audio file, then save its URL to the database. Text saves directly.
 - Show upload/save progress; announce success only after all required saves finish.
 - Keep form input after errors so the owner can retry.
-- Preserve an existing published post until its replacement saves successfully.
+- Create only on an empty date; never change an existing published post.
 - Resize/compress photos before upload; use efficient thumbnails and lazy loading.
 - Fetch entries by month and fetch audio only when needed.
 - Later add an export of entries and media for an independent archive copy.
@@ -124,7 +124,7 @@ drafts, when implemented, use drafts/{ownerUID}/{date} and owner-only media path
 3. Text publishing and date editing; review from a phone.
 4. Photo upload, compression, previews, and reliable save behavior; review.
 5. Audio upload/playback; review.
-6. Editing, deletion, private drafts, and export in small individual steps.
+6. Private drafts and export in small individual steps. Published moments remain final.
 7. Verify the complete experience and deploy when explicitly requested.
 
 ## Verification
@@ -312,3 +312,31 @@ behavior is unchanged.
 After publishing the first real entry, Phila requested the editor heading entirely
 black and upright, with the green Publish button restored. Rust remains the
 accent for selected format tabs and focus indicators.
+
+
+## Time capsule and mobile refinement — October 19, 2026
+
+Phila requested square calendar cells/photos, with mobile as the priority,
+rounded viewer photo corners, and permanent entries. This supersedes the earlier
+editing/replacement workflow recorded above. Every calendar cell now uses a
+1:1 aspect ratio at all widths; phone indicators fit the smaller squares. The
+viewer keeps the full uncropped image with rounded corners and a small gutter.
+
+Edit entry is removed. The editor blocks occupied dates and confirms that a
+publication is final. Transactions create only on an empty date. Database rules
+deny overwrites, nested edits, format replacement, and deletion even for the
+owner. Storage also denies replacement/deletion of existing media. Failed or
+interrupted publications can leave unreferenced files for administrator cleanup;
+the client cannot delete them. Firebase console/admin access bypasses client
+rules and remains an administrative escape hatch. No real entries were changed
+for verification.
+
+Verification: eleven offline tests, twelve database/Storage emulator tests, and
+the production build pass. Tests cover nested owner edits/deletes, concurrent
+publication, and immutable media alongside existing permission and size limits.
+
+Browser reviewed at 1280px desktop, 390px phone, and 320px small phone. Phone
+cells measure 50×50px and 40×40px respectively, without horizontal overflow.
+The real photo remains uncropped in the rounded viewer; the owner editor blocks
+its occupied date. Database and Storage rules deployed successfully to
+lifeonthisday-4d69a. No production test entry was submitted.

@@ -7,7 +7,7 @@ import { dateFormat } from "../utils/formatDate.js";
 import "./EntryViewer.css";
 
 // A controlled native dialog: React owns selection, the browser manages modal focus.
-export default function EntryViewer({ posts, entryDates, selectedDate, onSelect, onEdit }) {
+export default function EntryViewer({ posts, entryDates, selectedDate, onSelect }) {
   const dialog = useRef(null);
   const post = posts[selectedDate];
   const index = entryDates.indexOf(selectedDate);
@@ -94,7 +94,6 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect,
             )}
           </div>
           <footer className="viewer-footer">
-            {onEdit && <button className="owner-link viewer-edit" onClick={() => onEdit(selectedDate)}>Edit entry</button>}
             <div className="viewer-navigation">
               <button className="icon-button" title="Previous entry" aria-label="Previous entry" disabled={index === 0} onClick={() => navigate(-1)}>
                 <ArrowLeft size={19} />

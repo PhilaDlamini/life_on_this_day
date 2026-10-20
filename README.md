@@ -8,10 +8,9 @@ explains the components and data flow.
 Published site: **https://philadlamini.github.io/life_on_this_day/**
 
 Sign in with your owner Google account, choose **Add an entry**, select a date and
-one format, preview, then **Publish**. Open an existing entry and choose **Edit
-entry** to revise it. Publishing over an occupied date asks for confirmation.
-Changing the date publishes to the chosen date; it does not move or delete the
-original entry. Failed saves retain the form and preserve the existing entry.
+one format, preview, then **Publish**. Confirm that the moment is final: published
+entries cannot be edited, replaced, or deleted. Choose an empty date to keep
+another moment. Failed saves retain the form and leave existing entries intact.
 
 - **In words:** up to 20,000 characters.
 - **In light:** choose a photo up to 20 MB. The browser resizes it to at most
@@ -24,7 +23,7 @@ original entry. Failed saves retain the form and preserve the existing entry.
   size cap. Direct microphone recording is not part of this version.
 
 Visitors read without signing in. Entries and media are public when published.
-Private drafts, an export tool, and a deletion UI remain later work. A one-minute
+Private drafts and an export tool remain later work. A one-minute
 limit is enforced by the owner editor's decoded-audio check and database duration
 validation; Storage rules enforce file size/type and cannot independently decode
 an audio file to verify its claimed duration. No Cloud Functions are involved.
@@ -47,16 +46,18 @@ base path; local development uses `/`.
 - `src/firebase/config.js` contains the public SDK configuration and owner UID.
 - `database.rules.json` enforces the same UID, verified email, and Google provider.
 - Google Authentication is enabled. The app does not use Email/Password or Analytics.
-- Firebase Storage is enabled on Blaze. `storage.rules` restricts uploads and
-  deletion to the verified Google owner, with public downloads only under
-  `published/`. Listing, private paths, and overwriting an existing object are denied.
+- Firebase Storage is enabled on Blaze. `storage.rules` restricts uploads to the
+  verified Google owner, with public downloads only under `published/`. Listing,
+  private paths, overwriting existing objects, and deletion are denied.
 
 The client owner check controls UI. Database rules enforce permissions independently.
 Only `/posts` is publicly readable; root reads and drafts are denied. Entry writes
-require the owner and a single matching text/photo/audio payload. Dates must have
+require an empty date, the owner, and a single matching text/photo/audio payload. Dates must have
 an ISO-shaped key; the reader also checks that they represent real calendar dates.
-Unknown fields and mixed formats are rejected. Deletion is owner-authorized in the
-rules, but its confirmation UI belongs to a later checkpoint.
+Unknown fields and mixed formats are rejected. Updates, nested changes, and
+deletion are denied even for the owner. Console/admin access bypasses client
+rules; it can still perform deliberate administrative changes. Failed/interrupted
+media publication may leave unreferenced files requiring administrator cleanup.
 
 To deliberately release a reviewed database-rule change, scope the CLI command:
 
@@ -90,7 +91,7 @@ explicitly skipped in that command. With Firebase CLI and Java 21+ on PATH, run:
 npm run test:rules
 ```
 
-This starts a database and Storage emulators under **demo-life-on-this-day** and runs ten
+This starts a database and Storage emulators under **demo-life-on-this-day** and runs twelve
 permission/schema/publishing tests. All writes in these tests target the emulator, never
 the live journal. Coverage includes public reads, denied private/root reads,
 unauthorized writes/deletes, valid owner writes, malformed payloads, and denied
@@ -109,7 +110,7 @@ Remove the flag afterward. Production builds ignore the emulator flag.
   loaded only when the owner opens the editor.
 - `src/hooks/`: archive loading and owner authentication state.
 - `src/firebase/`: SDK configuration, reads, Google sign-in, transactional saves,
-  upload progress, and media cleanup.
+  upload progress, and create-only publishing.
 - `src/data/`: title options, entry labels, and retained sample fixtures.
 - `src/utils/`: local calendar, title, date-formatting, and remote-entry validation.
 - `src/styles.css`: global theme, layout, and accessible controls.

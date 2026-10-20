@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { assertFails, assertSucceeds, initializeTestEnvironment } from "@firebase/rules-unit-testing";
 import { deleteObject, getBytes, listAll, ref as storageRef, uploadBytes } from "firebase/storage";
 import { commitPost } from "../src/firebase/publish.js";
-import { get, ref, set } from "firebase/database";
+import { get, ref, set, update } from "firebase/database";
 
 // Ordinary npm test stays offline. The dedicated rules command starts the emulator.
 const enabled = Boolean(process.env.FIREBASE_DATABASE_EMULATOR_HOST);
@@ -18,7 +18,7 @@ before(async () => {
   const source = await readFile(new URL("../database.rules.json", import.meta.url), "utf8");
   const configuredOwner = JSON.parse(source).rules.posts.$date[".write"].match(/auth.uid === '([^']+)'/)[1];
   const rules = source.replaceAll(configuredOwner, ownerUID);
-    const storageRules = (await readFile(new URL("../storage.rules", import.meta.url), "utf8")).replaceAll(configuredOwner, ownerUID);
+  const storageRules = (await readFile(new URL("../storage.rules", import.meta.url), "utf8")).replaceAll(configuredOwner, ownerUID);
   environment = await initializeTestEnvironment({ projectId: "demo-life-on-this-day", database: { rules }, storage: { rules: storageRules } });
   await environment.withSecurityRulesDisabled(async (context) => {
     const database = context.database();
@@ -88,26 +88,47 @@ rulesTest("drafts and configuration remain inaccessible even to the owner in thi
 });
 
 
-rulesTest("publishing commits only if the expected entry still matches", async () => {
+rulesTest("publishing seals an empty date and rejects a second entry", async () => {
   const database = environment.authenticatedContext(ownerUID, ownerToken).database();
   const original = { type: "text", text: "First entry." };
-  const next = { type: "text", text: "Revised entry." };
-  await commitPost(database, "2026-10-23", original, null);
-  await commitPost(database, "2026-10-23", next, original);
-  await assert.rejects(commitPost(database, "2026-10-23", original, original), /changed while/);
-  assert.deepEqual((await get(ref(database, "posts/2026-10-23"))).val(), next);
+  await commitPost(database, "2026-10-23", original);
+  await assert.rejects(commitPost(database, "2026-10-23", { type: "text", text: "Revised." }), /already has an entry/);
+  assert.deepEqual((await get(ref(database, "posts/2026-10-23"))).val(), original);
 });
 
-rulesTest("failed publishing preserves the original entry", async () => {
+rulesTest("the owner cannot change, replace, or delete a published moment, including nested writes", async () => {
   const database = environment.authenticatedContext(ownerUID, ownerToken).database();
-  const original = { type: "text", text: "Keep this." };
-  await commitPost(database, "2026-10-24", original, null);
-  await assert.rejects(commitPost(database, "2026-10-24", { type: "audio", audioURL: "https://example.com/memo.m4a", duration: 61 }, original));
-  assert.deepEqual((await get(ref(database, "posts/2026-10-24"))).val(), original);
+  const entry = ref(database, "posts/2026-10-18");
+  const original = (await get(entry)).val();
+  await assertFails(set(entry, { type: "text", text: "Revised." }));
+  await assertFails(set(entry, { type: "photo", photoURL: "https://example.com/photo.jpg" }));
+  await assertFails(set(entry, null));
+  await assertFails(set(ref(database, "posts/2026-10-18/text"), "Changed."));
+  await assertFails(update(entry, { text: "Changed." }));
+  await assertFails(update(ref(database), { "posts/2026-10-18/text": "Changed." }));
+  await assertFails(set(ref(database, "posts"), {}));
+  assert.deepEqual((await get(entry)).val(), original);
+});
+
+rulesTest("concurrent publishers can keep only one moment for a date", async () => {
+  const first = environment.authenticatedContext(ownerUID, ownerToken).database();
+  const second = environment.authenticatedContext(ownerUID, ownerToken).database();
+  const results = await Promise.allSettled([
+    commitPost(first, "2026-10-25", { type: "text", text: "First device." }),
+    commitPost(second, "2026-10-25", { type: "text", text: "Second device." }),
+  ]);
+  assert.equal(results.filter((result) => result.status === "fulfilled").length, 1);
+  assert.ok(["First device.", "Second device."].includes((await get(ref(first, "posts/2026-10-25/text"))).val()));
+});
+
+rulesTest("failed validation leaves a new date empty", async () => {
+  const database = environment.authenticatedContext(ownerUID, ownerToken).database();
+  await assert.rejects(commitPost(database, "2026-10-24", { type: "audio", audioURL: "https://example.com/memo.m4a", duration: 61 }));
+  assert.equal((await get(ref(database, "posts/2026-10-24"))).val(), null);
 });
 
 
-rulesTest("Storage allows public downloads, with uploads and deletion reserved for the owner", async () => {
+rulesTest("Storage allows owner uploads and public downloads, but no deletion even by the owner", async () => {
   const path = "published/2026-10-18/test-upload/photo.jpg";
   const ownerStorage = environment.authenticatedContext(ownerUID, ownerToken).storage();
   await assertSucceeds(uploadBytes(storageRef(ownerStorage, path), new Uint8Array([1, 2, 3]), { contentType: "image/jpeg" }));
@@ -118,7 +139,8 @@ rulesTest("Storage allows public downloads, with uploads and deletion reserved f
   await assertFails(uploadBytes(storageRef(publicStorage, "published/2026-10-18/visitor/photo.jpg"), new Uint8Array([1]), { contentType: "image/jpeg" }));
   const otherStorage = environment.authenticatedContext("someone-else", ownerToken).storage();
   await assertFails(uploadBytes(storageRef(otherStorage, "published/2026-10-18/other/photo.jpg"), new Uint8Array([1]), { contentType: "image/jpeg" }));
-  await assertSucceeds(deleteObject(storageRef(ownerStorage, path)));
+  await assertFails(deleteObject(storageRef(ownerStorage, path)));
+  assert.equal((await getBytes(storageRef(publicStorage, path))).byteLength, 3);
 });
 
 rulesTest("Storage rejects oversized files, unexpected types, private paths, and in-place replacement", async () => {

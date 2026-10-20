@@ -1,4 +1,4 @@
-import { connectStorageEmulator, deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { connectStorageEmulator, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app, useEmulators } from "./config.js";
 
 const storage = getStorage(app);
@@ -17,8 +17,4 @@ export function uploadMedia(path, blob, contentType, onProgress) {
       catch (error) { reject(error); }
     });
   });
-}
-
-export async function removeMedia(urlOrPath) {
-  await deleteObject(ref(storage, urlOrPath));
 }

@@ -1,7 +1,8 @@
 /* EntryPreview appearance and responsive adjustments. */
 .day {
   position: relative;
-  aspect-ratio: 1.23;
+  aspect-ratio: 1;
+  min-height: 0;
   min-width: 0;
   overflow: hidden;
   background: #fff;
@@ -127,10 +128,6 @@
 }
 
 @media (max-width: 800px) {
-  .day {
-    aspect-ratio: 1;
-  }
-
   .text-snippet {
     font-size: 12px;
     -webkit-line-clamp: 2;
@@ -147,33 +144,28 @@
 }
 
 @media (max-width: 600px) {
-  .day {
-    aspect-ratio: auto;
-    height: 72px;
-  }
-
   .day-empty, .day-entry {
-    padding: 7px;
+    padding: 5px;
   }
 
   .day time {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .day-entry > time {
-    top: 8px;
-    left: 7px;
+    top: 5px;
+    left: 5px;
   }
 
   .day-photo > time {
     margin: -2px;
-    width: 19px;
-    height: 19px;
+    width: 17px;
+    height: 17px;
   }
 
   .photo-marker {
-    bottom: 7px;
-    right: 5px;
+    bottom: 4px;
+    right: 4px;
   }
 
   .text-snippet {
@@ -184,20 +176,22 @@
     display: block;
     position: absolute;
     left: 50%;
-    top: 36px;
-    transform: translateX(-50%);
+    top: 65%;
+    width: 16px;
+    height: 16px;
+    transform: translate(-50%, -50%);
   }
 
   .audio-symbol {
-    top: 35px;
+    top: 65%;
     left: 50%;
     right: auto;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
   }
 
   .audio-symbol svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
 
   .day-audio .waveform, .memo-label {

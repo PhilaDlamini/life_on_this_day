@@ -155,9 +155,9 @@ No router or shared authentication context is needed for this one screen.
 
 ## Verification
 
-`npm test` runs nine focused offline tests using Node's built-in runner.
+`npm test` runs eleven focused offline tests using Node's built-in runner.
 The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
-leap years, six-week grids, daily title stability, and remote entry validation. Six rule tests are skipped
+leap years, six-week grids, daily title stability, and remote entry validation. Twelve rule tests are skipped
 unless the emulator is running. Run under a timezone such
 as `TZ=America/Los_Angeles npm test` to exercise daylight-saving boundaries.
 
@@ -195,7 +195,7 @@ emulator commands, and the distinction between offline tests and rule tests.
 `App` owns one `useOwnerAuth` hook and passes its state to `OwnerAccess`. After
 sign-in, **Add an entry** opens the lazily loaded `components/editor/EntryEditor`.
 The form owns its draft input, date, chosen format, prepared media, errors, and
-progress. An existing viewer exposes **Edit entry** only to the owner.
+progress. Occupied dates are blocked; published viewers have no edit action.
 
 `prepareMedia.js` resizes/re-encodes photos and generates small thumbnails. A
 fresh canvas removes original image metadata. Audio is decoded locally to check
@@ -204,19 +204,19 @@ publishes anything; the preview uses local object URLs, revoked on cleanup.
 
 On Publish, `saveEntry.js` uploads new media to unique Storage paths first. It
 then calls `commitPost` to save the post using a Realtime Database transaction.
-The transaction compares the expected entry with the current value so another
-device's change cannot silently be overwritten. A temporary listener keeps the
-SDK cache populated during the transaction. Failed saves preserve the old entry
-and the form; new orphan uploads are cleaned up on a best-effort basis. Old media
-is removed only after the replacement has committed. Cleanup interruptions can
-leave unused files, but do not break the published entry.
+The transaction creates only if the date is empty, so two devices cannot publish
+to the same day. A temporary listener keeps the SDK cache populated during the
+transaction. Published entries and media cannot be changed or deleted, including
+by the owner through the client SDK. Failed saves retain the form; interrupted
+media publications may leave unreferenced files for administrator cleanup.
 
 `storage.rules` restricts writes to the owner, size/type limits, and unique object
-paths. `database.rules.json` validates one matching format, optional photo
+paths, denying replacement and deletion. `database.rules.json` allows creation
+only on empty dates and validates one matching format, optional photo
 thumbnail/alt text, and audio duration/waveform. Browser duration checking is not
 a server audio decoder: rule tests check duration metadata while Storage caps
 bytes and MIME types. This keeps the core workflow free of Cloud Functions.
 
 `onPublished` closes the editor and refreshes archive discovery, so a backdated
-post in a previously empty month appears immediately. The form's date changes
-where the entry is saved; it does not move/delete the original record.
+post in a previously empty month appears immediately. The form's date chooses
+where a new moment is kept; existing moments remain final.

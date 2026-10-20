@@ -30,7 +30,7 @@ export default function App() {
       <a className="skip-link" href="#calendar">Skip to calendar</a>
       <div className="journal">
         <JournalHeader title={title}>
-          <OwnerAccess auth={ownerAuth} canEdit={!loading && !error} onNewEntry={() => setEditorDate(dateKey(new Date()))} />
+          <OwnerAccess auth={ownerAuth} canPublish={!loading && !error} onNewEntry={() => setEditorDate(dateKey(new Date()))} />
         </JournalHeader>
         <main>
           {notice && <p className="archive-status" role="status">{notice}</p>}
@@ -64,7 +64,6 @@ export default function App() {
         entryDates={entryDates}
         selectedDate={selectedDate}
         onSelect={setSelectedDate}
-        onEdit={ownerAuth.isOwner ? (date) => { setSelectedDate(null); setEditorDate(date); } : undefined}
       />
       {ownerAuth.isOwner && editorDate && (
         <Suspense fallback={<p className="archive-status" role="status">Opening editor…</p>}>
