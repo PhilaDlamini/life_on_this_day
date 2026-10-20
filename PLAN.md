@@ -358,3 +358,14 @@ Phila found the list beneath each calendar redundant. Removed the mobile entry
 list and its unused component/styles. Populated calendar cells are the single
 entry point on all screen sizes; tapping one opens the existing viewer. This
 supersedes the earlier mobile summary-list design.
+
+
+## Mini-highlight from the archive
+
+Phila refined the duplicate-list removal: show up to five randomly chosen
+entries as a small “From the archive” highlight beneath the full calendar
+archive, on phones and larger screens. Pick from all loaded months, without
+repeats; keep the selection stable while browsing, and reshuffle on reopening
+or refreshing. Fewer than five entries means showing the available entries;
+an empty archive has no highlight section. Each row opens the existing viewer.
+The old per-month exhaustive mobile lists remain removed.

@@ -22,6 +22,9 @@ another moment. Failed saves retain the form and leave existing entries intact.
   Audio is not transcoded; export a compact recording if the source exceeds the
   size cap. Direct microphone recording is not part of this version.
 
+“From the archive” beneath the calendars shows up to five randomly picked
+entries, stable while browsing and reshuffled when reopening/refreshing.
+
 Visitors read without signing in. Entries and media are public when published.
 Private drafts and an export tool remain later work. A one-minute
 limit is enforced by the owner editor's decoded-audio check and database duration
@@ -84,7 +87,7 @@ Firebase Auth session. Basic flow follows the official
 
 ## Checks
 
-`npm test` runs eleven offline date/content/media-limit tests. Emulator-only rule tests are
+`npm test` runs thirteen offline date/content/media-limit/highlight tests. Emulator-only rule tests are
 explicitly skipped in that command. With Firebase CLI and Java 21+ on PATH, run:
 
 ```sh

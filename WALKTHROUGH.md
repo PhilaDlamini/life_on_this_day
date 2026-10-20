@@ -28,6 +28,7 @@ src/
     MonthCalendar.jsx      Month heading, calendar, legend, empty state
     EntryPreview.jsx       A populated photo/text/audio day
     EntryViewer.jsx        Full entry, native dialog, keyboard navigation
+    ArchiveHighlights.jsx  Up to five random moments, stable for one visit
     Waveform.jsx           Decorative amplitude bars shared by tile and viewer
     *.css                  Each component's styling and responsive rules
   hooks/
@@ -96,7 +97,11 @@ dates render `EntryPreview`.
 
 `EntryPreview` chooses its markup from `post.type`. On phones, the calendar cells
 use compact icons. Each populated tile reports its clicked date through the
-`onSelect` callback. The calendar is the only entry list on every screen size.
+`onSelect` callback. After all months load, `ArchiveHighlights` picks up to five
+unique entries from across the archive using a shuffle of copied date keys. Its
+local state keeps that selection stable while opening/closing entries. Reopening
+or refreshing the page makes a fresh selection. Each highlight uses the same
+viewer callback; the old exhaustive per-month mobile list is removed.
 
 ## 4. Following one click
 
@@ -153,7 +158,7 @@ No router or shared authentication context is needed for this one screen.
 
 ## Verification
 
-`npm test` runs eleven focused offline tests using Node's built-in runner.
+`npm test` runs thirteen focused offline tests using Node's built-in runner.
 The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
 leap years, six-week grids, daily title stability, and remote entry validation. Twelve rule tests are skipped
 unless the emulator is running. Run under a timezone such

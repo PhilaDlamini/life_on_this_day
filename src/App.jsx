@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import JournalHeader from "./components/JournalHeader.jsx";
 import MonthCalendar from "./components/MonthCalendar.jsx";
+import ArchiveHighlights from "./components/ArchiveHighlights.jsx";
 import EntryViewer from "./components/EntryViewer.jsx";
 import OwnerAccess from "./components/OwnerAccess.jsx";
 import useOwnerAuth from "./hooks/useOwnerAuth.js";
@@ -53,6 +54,7 @@ export default function App() {
               />
             ))}
           </div>
+          {!loading && !error && <ArchiveHighlights posts={posts} onSelect={setSelectedDate} />}
         </main>
         <footer className="site-footer">
           <span>A few things I didn't want to forget.</span>
