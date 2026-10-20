@@ -1,0 +1,222 @@
+# Codebase walkthrough
+
+This version includes Firebase reads, owner sign-in, and publishing for all three
+formats. Retained sample fixtures have not been uploaded to the real diary.
+The title changes daily, but the project is still named `life_on_this_day`.
+
+## Start here
+
+Read these files in order:
+
+1. `src/main.jsx` starts React and loads the global stylesheet.
+2. `src/App.jsx` supplies entries, tracks the selected date, and composes the page.
+3. `src/components/MonthCalendar.jsx` builds one month of days.
+4. `src/components/EntryPreview.jsx` renders a populated day as a button.
+5. `src/components/EntryViewer.jsx` opens the selected entry in a native dialog.
+
+You can follow a complete user interaction through those five files.
+
+## Directory map
+
+```text
+src/
+  main.jsx                 Mount React in the HTML root
+  App.jsx                  Own data and selection, compose the page
+  styles.css               Global theme, page layout, shared controls
+  components/
+    JournalHeader.jsx      Masthead and daily title
+    MonthCalendar.jsx      Month heading, calendar, legend, empty state
+    EntryPreview.jsx       A populated photo/text/audio day
+    MobileEntryList.jsx    Readable entry summaries beneath a mobile calendar
+    EntryViewer.jsx        Full entry, native dialog, keyboard navigation
+    Waveform.jsx           Decorative amplitude bars shared by tile and viewer
+    *.css                  Each component's styling and responsive rules
+  hooks/
+    useArchive.js          Loading, month subscriptions, cleanup, and retry
+    useOwnerAuth.js        Auth session, owner check, and sign-in actions
+  firebase/
+    config.js             Public SDK configuration and owner UID
+    database.js           Public date discovery and month listeners
+    auth.js               Google sign-in and owner checks
+  data/
+    samplePosts.js         Fictional entries and sample media references
+    sample-waveform.json   Amplitudes from the synthesized sample recording
+    titles.js              Ten daily titles
+    entryTypes.js          Shared human-readable format labels
+  utils/
+    calendar.js            Local date keys, calendar cells, archive months
+    dailyTitle.js          Select a title for a local calendar date
+    formatDate.js          Shared date formatters
+public/samples/            Photo and audio files served by Vite
+tests/dates.test.js       Small Node tests for calendar/title rules
+```
+
+## 1. Starting the app
+
+`index.html` provides `<div id="root">`. `main.jsx` mounts `App` there using
+React's `createRoot`. Strict Mode helps surface missing effect cleanup during
+development. Global styles define fonts, colors, page width, focus outlines,
+and shared icon buttons.
+
+## 2. Choosing the title and supplying entries
+
+`App` receives published posts from `useArchive()` and calls `dailyTitle()`. The title list is data;
+selection by date is a separate utility. A local calendar day maps to one title,
+starting with As It Was on October 19, 2026, and repeating after ten days.
+Refreshing does not randomize it. The calculation uses local year/month/day
+parts, then counts civil days without daylight-saving drift. It runs when App
+renders; there is no background midnight timer.
+
+`JournalHeader` receives the title as a prop and renders the last word in the
+original italic accent. An effect in `App` sets the browser tab title. The footer
+receives the same value directly from `App`.
+
+An entry is keyed by its date, with one format:
+
+```js
+"2026-10-18": {
+  type: "text",
+  text: "I took the long way home...",
+}
+```
+
+Photos have `photoURL` and optional accessibility `alt`; audio has `audioURL`.
+The sample audio also carries waveform amplitudes for decoration. These bars
+are not an audio player and do not fetch or start a recording.
+
+## 3. Rendering the archive
+
+`archiveMonths(posts)` always includes the current local month, adds earlier
+months with entries, and orders the result newest first. Empty past months and
+future months are omitted. This keeps an empty archive visible as one calendar.
+
+`App` passes each month, the entries, the ordered date keys, and an `onSelect`
+callback to `MonthCalendar`. `calendarDays(month)` returns Monday-first cells.
+Padding cells are `null`, empty dates render neutral day numbers, and populated
+dates render `EntryPreview`.
+
+`EntryPreview` chooses its markup from `post.type`. On phones, the calendar cells
+use compact icons; `MobileEntryList` beneath each month gives readable excerpts.
+Both components report the clicked date through the same `onSelect` callback.
+
+## 4. Following one click
+
+For a text entry keyed October 18 (as in our retained sample fixture):
+
+```text
+EntryPreview's button is clicked
+  -> onSelect("2026-10-18")
+  -> App's setSelectedDate updates React state
+  -> EntryViewer receives the selectedDate and posts
+  -> posts[selectedDate] selects the text entry
+  -> the dialog opens and renders its paragraphs
+```
+
+The selected date is the only piece of React state in this flow. The entry,
+position, and previous/next dates are derived from props rather than duplicated
+in state. This keeps the calendar and viewer in agreement.
+
+## 5. Dialog behavior and cleanup
+
+`EntryViewer` uses a ref to call the native dialog's `showModal()` and `close()`.
+The browser handles modal focus and keyboard containment. While open, the viewer
+locks page scrolling. Its effect cleanup closes the dialog and restores the
+previous scroll style, including when the component unmounts.
+
+Escape, the close button, and a click outside the dialog clear selection.
+Native dialog closing returns focus to the opening button. A guard ignores a
+late close event if the dialog has already reopened.
+
+Left/right arrows navigate the ordered entry dates, including across months.
+Audio controls retain their own arrow-key behavior. The content's React `key`
+is the selected date, so changing entries removes the previous audio element.
+Audio uses native controls and never autoplays. Photos use `object-fit: contain`
+in the viewer so the whole image remains visible.
+
+## Where to make common changes
+
+| Change | File |
+| --- | --- |
+| Add or edit a sample entry | `src/data/samplePosts.js` |
+| Change the daily title options | `src/data/titles.js` |
+| Change the daily title schedule | `src/utils/dailyTitle.js` |
+| Change colors, fonts, page spacing | `src/styles.css` |
+| Change title appearance | `src/components/JournalHeader.css` |
+| Change calendar spacing | `src/components/MonthCalendar.css` |
+| Change calendar entry previews | `src/components/EntryPreview.jsx` and `.css` |
+| Change mobile summaries | `src/components/MobileEntryList.jsx` and `.css` |
+| Change viewer behavior/appearance | `src/components/EntryViewer.jsx` and `.css` |
+
+Components receive their data through props. `App` gets its posts from
+`src/hooks/useArchive.js`, which calls `src/firebase/database.js`. Firebase calls
+stay outside calendar/viewer components. `OwnerAccess` uses `useOwnerAuth` and
+`src/firebase/auth.js` for Google sign-in; visitors read without authenticating.
+No router or shared authentication context is needed for this one screen.
+
+## Verification
+
+`npm test` runs nine focused offline tests using Node's built-in runner.
+The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
+leap years, six-week grids, daily title stability, and remote entry validation. Six rule tests are skipped
+unless the emulator is running. Run under a timezone such
+as `TZ=America/Los_Angeles npm test` to exercise daylight-saving boundaries.
+
+`npm run build` checks the production bundle. Browser checks complement the
+utility tests: desktop and mobile layout, all viewers, real audio playback,
+keyboard entry navigation, focus restoration, and page scroll cleanup.
+
+
+## Firebase data flow
+
+`src/firebase/config.js` initializes the SDK with the public configuration,
+Realtime Database URL, and the verified owner's UID. It does not initialize
+Analytics or Storage. Development can explicitly select local emulators.
+
+`useArchive` discovers published date keys through a shallow REST request, then
+subscribes to Firebase SDK queries for each relevant month. Each snapshot replaces
+that month's entries in React state. Invalid dates/content are ignored. The hook
+also owns request cancellation, unsubscribe cleanup, loading, timeout, and retry.
+The current empty month remains visible, and read errors do not masquerade as an
+empty journal. Newly populated older months are discovered when opening/retrying.
+
+`useOwnerAuth` observes Firebase's session and exposes sign-in/sign-out actions.
+The Google popup result must match the pinned owner UID. `OwnerAccess` displays
+that state. Its check controls presentation; `database.rules.json` enforces the
+actual write permission, including verified email and Google provider, even if
+someone bypasses the interface. Private paths remain denied in this checkpoint.
+
+The owner UID is a public identifier, not a secret. Keep its configuration and
+rule value aligned if the owner ever changes. Read README.md for local domains,
+emulator commands, and the distinction between offline tests and rule tests.
+
+
+## Owner publishing
+
+`App` owns one `useOwnerAuth` hook and passes its state to `OwnerAccess`. After
+sign-in, **Add an entry** opens the lazily loaded `components/editor/EntryEditor`.
+The form owns its draft input, date, chosen format, prepared media, errors, and
+progress. An existing viewer exposes **Edit entry** only to the owner.
+
+`prepareMedia.js` resizes/re-encodes photos and generates small thumbnails. A
+fresh canvas removes original image metadata. Audio is decoded locally to check
+its actual duration and build decorative waveform bars. File preparation never
+publishes anything; the preview uses local object URLs, revoked on cleanup.
+
+On Publish, `saveEntry.js` uploads new media to unique Storage paths first. It
+then calls `commitPost` to save the post using a Realtime Database transaction.
+The transaction compares the expected entry with the current value so another
+device's change cannot silently be overwritten. A temporary listener keeps the
+SDK cache populated during the transaction. Failed saves preserve the old entry
+and the form; new orphan uploads are cleaned up on a best-effort basis. Old media
+is removed only after the replacement has committed. Cleanup interruptions can
+leave unused files, but do not break the published entry.
+
+`storage.rules` restricts writes to the owner, size/type limits, and unique object
+paths. `database.rules.json` validates one matching format, optional photo
+thumbnail/alt text, and audio duration/waveform. Browser duration checking is not
+a server audio decoder: rule tests check duration metadata while Storage caps
+bytes and MIME types. This keeps the core workflow free of Cloud Functions.
+
+`onPublished` closes the editor and refreshes archive discovery, so a backdated
+post in a previously empty month appears immediately. The form's date changes
+where the entry is saved; it does not move/delete the original record.

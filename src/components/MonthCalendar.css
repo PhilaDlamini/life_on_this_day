@@ -1,0 +1,140 @@
+/* MonthCalendar appearance and responsive adjustments. */
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 21px;
+}
+
+.month-title {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.month-title h2 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 400;
+  margin: 0;
+}
+
+.month-year {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.calendar-section + .calendar-section {
+  margin-top: 56px;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 0 0 10px;
+}
+
+.weekdays span {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding-left: 12px;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.calendar-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 15px;
+  color: var(--muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.format-key {
+  display: flex;
+  gap: 20px;
+}
+
+.format-key > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.format-key > span:nth-child(1) {
+  color: var(--red);
+}
+
+.format-key > span:nth-child(2) {
+  color: #111;
+}
+
+.format-key > span:nth-child(3) {
+  color: var(--green);
+}
+
+.empty-month {
+  border: 1px solid var(--line);
+  border-top: 0;
+  text-align: center;
+  padding: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.empty-month p {
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .calendar-toolbar {
+    margin-bottom: 18px;
+  }
+
+  .month-title {
+    gap: 10px;
+  }
+
+  .month-title h2 {
+    font-size: 29px;
+  }
+
+  .calendar-section + .calendar-section {
+    margin-top: 40px;
+  }
+
+  .weekdays span {
+    font-size: 9px;
+    padding-left: 6px;
+  }
+
+  .format-key {
+    gap: 12px;
+  }
+
+  .format-key > span {
+    gap: 4px;
+  }
+
+  .calendar-caption {
+    padding-top: 13px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 359px) {
+  .format-key {
+    gap: 8px;
+  }
+}

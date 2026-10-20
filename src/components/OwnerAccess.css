@@ -1,0 +1,28 @@
+.owner-access {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 55%;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: right;
+}
+
+.owner-link {
+  padding: 5px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.owner-error {
+  flex-basis: 100%;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+
+.owner-error { color: var(--red); }

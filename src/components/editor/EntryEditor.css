@@ -1,0 +1,179 @@
+.editor-dialog {
+  width: min(640px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: inherit;
+  background: #fafbf9;
+  overflow: auto;
+}
+
+.editor-dialog::backdrop {
+  background: rgb(21 29 26 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.editor-header, .editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.editor-header {
+  margin-bottom: 24px;
+}
+
+.editor-header h2 {
+  margin: 0;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.editor-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.editor-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-size: 12px;
+}
+
+.editor-label input, .editor-label textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: white;
+  color: #111;
+  font: inherit;
+  font-size: 16px;
+}
+
+.editor-label textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.editor-label input:focus-visible, .editor-label textarea:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+.editor-label input[type='file'] {
+  font-size: 13px;
+}
+
+.editor-formats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.editor-formats button {
+  flex: 1;
+  padding: 10px 4px;
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.editor-formats button[aria-pressed='true'] {
+  background: #292d2b;
+  color: white;
+  border-color: #292d2b;
+}
+
+.editor-hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.editor-preview {
+  overflow-wrap: anywhere;
+}
+
+.editor-preview > p {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #111;
+}
+
+.editor-preview img {
+  display: block;
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+}
+
+.editor-preview audio {
+  width: 100%;
+}
+
+.editor-preview .waveform {
+  height: 44px;
+  color: var(--green);
+  margin: 18px 0;
+}
+
+.editor-preview small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.editor-error {
+  color: var(--red);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.editor-footer {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.editor-footer > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.publish-button {
+  border: 0;
+  border-radius: 3px;
+  padding: 12px 22px;
+  background: var(--green);
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .editor-dialog {
+    padding: 18px;
+  }
+
+  .editor-header h2 {
+    font-size: 28px;
+  }
+}
+
+.editor-preview h3 {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 18px 0 10px;
+}

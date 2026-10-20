@@ -1,0 +1,43 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "posts": {
+      ".read": true,
+      "$date": {
+        ".write": "auth != null && auth.uid === 'sieqz9C2ZGW9xrMKlhgj0jO543X2' && auth.token.email_verified === true && auth.token.firebase.sign_in_provider === 'google.com'",
+        ".validate": "$date.matches(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/) && newData.hasChild('type') && ((newData.child('type').val() === 'text' && newData.hasChild('text') && !newData.hasChild('photoURL') && !newData.hasChild('audioURL') && !newData.hasChild('alt') && !newData.hasChild('thumbnailURL') && !newData.hasChild('duration') && !newData.hasChild('waveform')) || (newData.child('type').val() === 'photo' && newData.hasChild('photoURL') && !newData.hasChild('text') && !newData.hasChild('audioURL') && !newData.hasChild('duration') && !newData.hasChild('waveform')) || (newData.child('type').val() === 'audio' && newData.hasChildren(['audioURL', 'duration']) && !newData.hasChild('text') && !newData.hasChild('photoURL') && !newData.hasChild('alt') && !newData.hasChild('thumbnailURL')))",
+        "type": {
+          ".validate": "newData.isString() && (newData.val() === 'text' || newData.val() === 'photo' || newData.val() === 'audio')"
+        },
+        "text": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 20000"
+        },
+        "photoURL": {
+          ".validate": "newData.isString() && newData.val().matches(/^https:\\/\\/.+/)"
+        },
+        "audioURL": {
+          ".validate": "newData.isString() && newData.val().matches(/^https:\\/\\/.+/)"
+        },
+        "alt": {
+          ".validate": "newData.isString() && newData.val().length <= 2000"
+        },
+        "$other": {
+          ".validate": false
+        },
+        "thumbnailURL": {
+          ".validate": "newData.isString() && newData.val().matches(/^https:\\/\\/.+/)"
+        },
+        "duration": {
+          ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 60"
+        },
+        "waveform": {
+          ".validate": "newData.hasChildren()",
+          "$index": {
+            ".validate": "$index.matches(/^([0-9]|[1-5][0-9]|6[0-3])$/) && newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+          }
+        }
+      }
+    }
+  }
+}

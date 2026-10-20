@@ -1,0 +1,86 @@
+/* JournalHeader appearance and responsive adjustments. */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  gap: 16px;
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 550;
+}
+
+.journal-mark {
+  display: flex;
+  align-items: center;
+  color: var(--red);
+}
+
+.sample-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.introduction {
+  padding: 36px 0 38px;
+}
+
+.introduction h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 62px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.08;
+}
+
+.introduction h1 em {
+  font-weight: 400;
+  color: var(--red);
+}
+
+.introduction p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    padding: 22px 0;
+  }
+
+  .masthead {
+    font-size: 11px;
+    gap: 8px;
+  }
+
+  .sample-label {
+    font-size: 9px;
+  }
+
+  .introduction {
+    padding: 30px 0 32px;
+  }
+
+  .introduction h1 {
+    font-size: 43px;
+  }
+
+  .introduction p {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 359px) {
+  .introduction h1 {
+    font-size: 36px;
+  }
+}

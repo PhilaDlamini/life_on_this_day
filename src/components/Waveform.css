@@ -1,0 +1,17 @@
+/* Waveform appearance and responsive adjustments. */
+.waveform {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.waveform > span {
+  width: 3px;
+  min-width: 1px;
+  flex: 1;
+  max-width: 6px;
+  background: currentColor;
+  border-radius: 2px;
+}

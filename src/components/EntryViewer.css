@@ -1,0 +1,162 @@
+/* EntryViewer appearance and responsive adjustments. */
+.entry-dialog {
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  width: min(760px, calc(100% - 40px));
+  max-height: calc(100dvh - 40px);
+  background: #fff;
+  color: #292d2b;
+  overflow: auto;
+}
+
+.entry-dialog::backdrop {
+  background: rgb(21 29 26 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.viewer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px 28px;
+}
+
+.entry-kind {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.kind-photo {
+  color: var(--red);
+}
+
+.kind-text {
+  color: #111;
+}
+
+.kind-audio {
+  color: var(--green);
+}
+
+.viewer-header h2 {
+  margin: 0;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.viewer-photo {
+  background: #f4f6f2;
+  display: flex;
+  justify-content: center;
+}
+
+.viewer-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 65dvh;
+  object-fit: contain;
+}
+
+.viewer-text {
+  background: #fff;
+  padding: 12px 28px 32px;
+  color: #111;
+}
+
+.viewer-text p {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.viewer-audio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 40px;
+  background: #eaf3ec;
+  color: var(--green);
+}
+
+.viewer-audio .waveform {
+  max-width: 420px;
+  height: 90px;
+  gap: 4px;
+}
+
+.viewer-audio audio {
+  width: 100%;
+  max-width: 450px;
+}
+
+.viewer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 14px 24px;
+  gap: 12px;
+}
+
+.viewer-navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.viewer-navigation > span {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  .entry-dialog {
+    width: calc(100% - 24px);
+    max-height: calc(100dvh - 24px);
+  }
+
+  .viewer-header {
+    padding: 22px 18px;
+  }
+
+  .viewer-header h2 {
+    font-size: 27px;
+  }
+
+  .viewer-text {
+    padding: 10px 18px 28px;
+  }
+
+  .viewer-text p {
+    font-size: 16px;
+  }
+
+  .viewer-audio {
+    padding: 34px 22px;
+  }
+
+  .viewer-audio .waveform {
+    height: 76px;
+    gap: 3px;
+  }
+
+  .viewer-footer {
+    padding: 12px 14px;
+  }
+
+  .viewer-navigation {
+    gap: 3px;
+  }
+}
+
+.viewer-edit { margin-right: auto; font-size: 12px; color: var(--muted); }

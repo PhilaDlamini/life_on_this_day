@@ -1,0 +1,101 @@
+/* MobileEntryList appearance and responsive adjustments. */
+.mobile-moments {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .mobile-moments {
+    display: block;
+    margin-top: 28px;
+  }
+
+  .moment-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+    border: 0;
+    border-top: 1px solid var(--line);
+    background: none;
+    text-align: left;
+    padding: 14px 0;
+  }
+
+  .moment-date {
+    display: flex;
+    flex-direction: column;
+    width: 28px;
+    align-items: center;
+    gap: 3px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .moment-date small {
+    font-size: 9px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .moment-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .moment-photo .moment-preview {
+    background: #f4ede8;
+  }
+
+  .moment-text .moment-preview {
+    color: #111;
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+
+  .moment-text .moment-copy small {
+    color: #111;
+  }
+
+  .moment-audio .moment-preview {
+    color: var(--green);
+    background: #eaf3ec;
+  }
+
+  .moment-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .moment-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .moment-copy > span {
+    font-size: 12px;
+    font-weight: 550;
+  }
+
+  .moment-copy small {
+    font-size: 11px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .moment-row > svg {
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+}

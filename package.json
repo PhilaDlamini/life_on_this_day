@@ -1,0 +1,27 @@
+{
+  "name": "life-on-this-day",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test",
+    "test:rules": "firebase emulators:exec --only database,storage --project demo-life-on-this-day \"node --test tests/firebase.rules.test.js\""
+  },
+  "dependencies": {
+    "firebase": "^13.0.0",
+    "lucide-react": "^1.59.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.14.6"
+  }
+}
