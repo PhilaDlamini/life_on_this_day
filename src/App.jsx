@@ -56,7 +56,7 @@ export default function App() {
         </main>
         <footer className="site-footer">
           <span>A few things I didn't want to forget.</span>
-          <span>{title} <span className="footer-star">*</span> 2026</span>
+          <span>Phila Dlamini <span className="footer-star">*</span> 2026</span>
         </footer>
       </div>
       <EntryViewer

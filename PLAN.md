@@ -343,3 +343,10 @@ lifeonthisday-4d69a. No production test entry was submitted.
 
 Released as commit a703cea; GitHub Pages run 39366877541 succeeded. The deployed
 390px calendar was verified at 50×50px per cell with the original photo present.
+
+
+## Footer authorship
+
+Phila requested replacing the rotating title in the footer with
+“Phila Dlamini * 2026”. Keep the existing star styling and the line
+“A few things I didn't want to forget.” The masthead still rotates daily.
