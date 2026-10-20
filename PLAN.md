@@ -409,3 +409,8 @@ authorization, date policy, and all formats. Eleven emulator tests pass, includi
 real callable requests, rejection of direct owner writes, and concurrent
 submissions that keep exactly one moment. Production build passes. No test entry
 or media was published to the live diary.
+
+Release: callable publishEntry and deny-all client database writes deployed
+successfully. Live unauthenticated callable requests return permission denied.
+Commit a5a2939 pushed; Pages run 39368918957 succeeded. Function build images
+receive a one-day Artifact Registry cleanup policy; diary media is unaffected.
