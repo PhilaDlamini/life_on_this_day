@@ -47,7 +47,7 @@ test("valid formats publish for today and an occupied day stays final", async ()
   ]) {
     const result = await publishMoment({ auth, data: { ...data, post } }, { now, commit: async (date, value) => {
       assert.equal(date, data.date);
-      assert.deepEqual(value, post);
+      assert.deepEqual(value, post.type === "text" ? { type: "text", runs: [{ text: post.text }] } : post);
       return true;
     } });
     assert.deepEqual(result, { date: data.date });

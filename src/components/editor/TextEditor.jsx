@@ -9,20 +9,21 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import HardBreak from "@tiptap/extension-hard-break";
 import { Placeholder, UndoRedo } from "@tiptap/extensions";
-import { documentFromText, textFromDocument } from "../../utils/textFormatting.js";
+import { plainText } from "../../../functions/shared/textRuns.js";
+import { documentFromRuns, runsFromDocument } from "../../utils/textFormatting.js";
 import "./TextEditor.css";
 
 // Tiptap owns editing/selection/undo; the parent owns the portable draft and saving.
-export default function TextEditor({ value, onChange, disabled }) {
+export default function TextEditor({ runs, onChange, disabled }) {
   const editor = useEditor({
     extensions: [Document, Paragraph, Text, Bold, Italic, Underline, HardBreak, UndoRedo, Placeholder.configure({ placeholder: "Whatever stayed with you." })],
-    content: documentFromText(value),
+    content: documentFromRuns(runs),
     editorProps: { attributes: {
       role: "textbox", "aria-label": "Your words", "aria-multiline": "true",
       "aria-describedby": "text-help", spellcheck: "true", autocapitalize: "sentences",
       class: "rich-text-input",
     } },
-    onUpdate: ({ editor }) => onChange(textFromDocument(editor.getJSON())),
+    onUpdate: ({ editor }) => onChange(runsFromDocument(editor.getJSON())),
   });
   const active = useEditorState({ editor, selector: ({ editor }) => ({
     bold: editor?.isActive("bold"), italic: editor?.isActive("italic"), underline: editor?.isActive("underline"),
@@ -41,7 +42,7 @@ export default function TextEditor({ value, onChange, disabled }) {
           onMouseDown={(event) => event.preventDefault()} onClick={() => editor.chain().focus().toggleUnderline().run()}><UnderlineIcon size={17} strokeWidth={2} /></button>
       </div>
       <EditorContent editor={editor} />
-      <p className="sr-only" id="text-help">Select words to format them, or choose a style before typing. {value.text.length.toLocaleString()} / 20,000</p>
+      <p className="sr-only" id="text-help">Select words to format them, or choose a style before typing. {plainText(runs).length.toLocaleString()} / 20,000</p>
     </div>
   );
 }

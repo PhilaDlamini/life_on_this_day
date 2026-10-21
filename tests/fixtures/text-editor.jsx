@@ -10,17 +10,17 @@ import "../../src/components/editor/EntryEditor.css";
 
 function Fixture() {
   const date = "2026-10-20";
-  const [words, setWords] = useState({ text: "A quiet ordinary day.", textRuns: [{ text: "A quiet ordinary day." }] });
+  const [runs, setRuns] = useState([{ text: "A quiet ordinary day." }]);
   const [writing, setWriting] = useState(true);
   const [selectedDate, onSelect] = useState(null);
-  const posts = { [date]: { type: "text", ...words } };
+  const posts = { [date]: { type: "text", runs } };
   return <main className="journal" style={{ padding: "24px 0" }}>
     <p className="editor-hint">Local fixture · nothing is published</p>
     <div className="editor-label">Your words
-      {writing && <TextEditor value={words} onChange={setWords} />}
+      {writing && <TextEditor runs={runs} onChange={setRuns} />}
     </div>
     <button type="button" onClick={() => setWriting(!writing)}>{writing ? "Close writing" : "Resume writing"}</button>
-    <section className="editor-preview"><h3>Preview</h3><p><FormattedText {...words} /></p></section>
+    <section className="editor-preview"><h3>Preview</h3><p><FormattedText runs={runs} /></p></section>
     <MonthCalendar month={new Date(2026, 9, 1)} posts={posts} entryDates={[date]} onSelect={onSelect} />
     <EntryViewer posts={posts} entryDates={[date]} selectedDate={selectedDate} onSelect={onSelect} />
   </main>;

@@ -466,3 +466,20 @@ icons, black emphasis, and a subtle paper-colored selected state. The original
 remain accessible without adding visible clutter. Publishing behavior and
 formatting persistence are unchanged. Verify using the real composer component
 inside a local fixture that intercepts form submission.
+
+
+## Canonical runs-only text storage — October 20, 2026
+
+Phila authorized switching to one canonical list of runs instead of duplicating
+text in `text` and `textRuns`. New text entries now store only `{type:"text",
+runs:[...]}`. Plain text is derived when required. The owner editor also stores
+only the runs array in state. The publisher validates and merges adjacent runs
+with identical marks, and normalizes submissions from older cached clients.
+
+The reader supports existing plain `text` and `text` plus `textRuns` entries.
+No existing diary record is rewritten and no database-console action is needed.
+This supersedes earlier descriptions of the text-plus-formatting storage shape.
+The UI, formatting controls, Pacific date policy, and immutable entries remain
+unchanged. Checks: twenty-one offline tests, eleven emulator tests, and the
+production build pass, including canonical storage without duplicate fields
+and preserved formatting for both legacy and current client submissions.

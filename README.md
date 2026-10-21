@@ -97,7 +97,7 @@ Firebase Auth session. Basic flow follows the official
 
 ## Checks
 
-`npm test` runs twenty offline date/content/media-limit/highlight/publishing/formatting tests. Emulator-only rule tests are
+`npm test` runs twenty-one offline date/content/media-limit/highlight/publishing/formatting tests. Emulator-only rule tests are
 explicitly skipped in that command. With Firebase CLI and Java 21+ on PATH, run:
 
 ```sh
@@ -162,3 +162,19 @@ Before a release, run `npm test`, `npm run test:rules`, and `npm run build`.
 A local Pages-path smoke build is `BASE_PATH=/life_on_this_day/ npm run build`.
 No Firebase admin credentials or GitHub tokens belong in this repository. The
 Firebase browser configuration and owner UID are public identification values.
+
+
+## Text storage
+
+New text entries store one canonical `runs` array, for example:
+
+```json
+{ "type": "text", "runs": [{ "text": "A " }, { "text": "quiet", "italic": true }, { "text": "day." }] }
+```
+
+There is no duplicate plain-text field. Text is derived by joining the runs;
+adjacent runs with the same formatting are merged before saving. The reader
+supports older `text` and `text`/`textRuns` records without modifying them. The
+publishing function normalizes older cached clients to the new shape as well.
+No manual database migration is required, and existing published moments remain
+untouched.

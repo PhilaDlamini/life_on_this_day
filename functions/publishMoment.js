@@ -1,4 +1,5 @@
 import { journalDay, OWNER_UID } from "./shared/journalDay.js";
+import { canonicalPost } from "./shared/textRuns.js";
 import { isValidPost } from "./shared/posts.js";
 
 export class PublicationError extends Error {
@@ -22,7 +23,7 @@ export async function publishMoment({ auth, data }, { commit, now = () => new Da
     throw new PublicationError("invalid-argument", "This entry is not valid. Check its text or media and try again.");
   }
   // Check again at the actual transaction, including any retries around midnight.
-  const committed = await commit(date, data.post);
+  const committed = await commit(date, canonicalPost(data.post));
   if (!committed) {
     if (journalDay(now()) !== date) {
       throw new PublicationError("failed-precondition", "A new Pacific day has begun. Review your draft and publish it for today.");

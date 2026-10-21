@@ -158,7 +158,7 @@ No router or shared authentication context is needed for this one screen.
 
 ## Verification
 
-`npm test` runs twenty focused offline tests using Node's built-in runner.
+`npm test` runs twenty-one focused offline tests using Node's built-in runner.
 The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
 leap years, six-week grids, daily title stability, and remote entry validation. Eleven emulator tests are skipped
 unless the emulator is running. Run under a timezone such
@@ -240,11 +240,16 @@ formatting toolbar; `EntryEditor` still owns the draft and publication lifecycle
 and restores a draft after switching formats. The owner-only editor bundle
 contains the editing library; public readers only need the small renderer.
 
-A text post keeps its ordinary `text` string. When it contains emphasis, it also
-has `textRuns`: strings with optional bold/italic/underline flags. Shared server
-validation rejects unknown keys, invalid flags, and runs whose concatenation
-differs from `text`. `FormattedText.jsx` renders these using React's escaped text
-and semantic markup, with plain text as the fallback for old entries. No HTML
-string is injected into the document. Tests cover conversion, validation, and
-the callable save/read round trip; `tests/fixtures/text-editor.html` is an
-isolated, nonpublishing browser fixture for selection and rendering checks.
+A text post stores one canonical `runs` array: text fragments with optional
+bold/italic/underline flags. Plain text is derived by joining them. The editor
+also owns only runs; conversion and rendering do not maintain a second copy.
+Shared validation rejects empty/oversized text, unknown keys, invalid flags,
+and mixed old/new representations. The publisher merges matching adjacent runs
+and normalizes submissions from cached older clients before committing.
+
+`FormattedText.jsx` uses React's escaped text and semantic markup. A shared
+compatibility helper reads existing `text` and `textRuns` records, so permanent
+published entries need no migration. Tests cover old/new reads, canonical writes,
+conversion, validation, and the callable save/read round trip. The isolated
+formatting fixture checks selection/rendering; the composer fixture uses the
+real editor with submission intercepted.
