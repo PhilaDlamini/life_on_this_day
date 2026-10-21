@@ -444,3 +444,7 @@ round-trip tests preserve all three styles and reject mismatched runs. Browser
 fixture tests selected-word styling, combined styles, undo/redo, editor remount,
 viewer rendering, and 390px/320px mobile excerpts. The fixture is separate from
 Firebase and cannot publish. Production build passes; no live diary data changed.
+
+The shared DM Sans font request includes real italic faces at weights 400–700;
+font synthesis is disabled, so semantic em tags alone were insufficient. This
+keeps italic and bold-italic text visibly correct in both editor and reader.
