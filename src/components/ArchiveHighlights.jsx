@@ -1,3 +1,4 @@
+import FormattedText from "./FormattedText.jsx";
 import { useState } from "react";
 import { ArrowRight, Headphones, Quote } from "lucide-react";
 import { entryTypes } from "../data/entryTypes.js";
@@ -31,7 +32,7 @@ export default function ArchiveHighlights({ posts, onSelect }) {
             </span>
             <span className="highlight-copy">
               <span>{entryTypes[post.type]}</span>
-              {post.type === "text" && <small>{post.text}</small>}
+              {post.type === "text" && <small><FormattedText {...post} /></small>}
             </span>
             <ArrowRight size={17} aria-hidden="true" />
           </button>

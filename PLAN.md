@@ -421,3 +421,26 @@ receive a one-day Artifact Registry cleanup policy; diary media is unaffected.
 Phila requested slightly darker calendar lines while keeping the quiet
 gray-green tone. The grid now uses its own #bcc4b9 line color; shared page
 dividers retain their existing styling.
+
+
+## Mobile text excerpts and inline formatting — October 20, 2026
+
+Phila requested actual text instead of quote icons in mobile calendar tiles,
+and the ability to apply bold, italic, and underline to selected runs while
+composing an entry. Text tiles now retain a compact two-line excerpt on phones.
+
+A small Tiptap editor, loaded only with the owner editor, handles selection,
+inline marks, paragraphs, and undo/redo. Only bold/italic/underline are enabled.
+A portable textRuns array stores nonempty strings plus optional true-valued
+bold/italic/underline flags; concatenated runs must exactly match the plain text.
+Both server and reader validate this shape. No raw HTML is stored or rendered.
+FormattedText renders escaped React text and semantic strong/em/u elements in
+tiles, highlights, previews, and the full viewer. Existing plain text entries
+need no migration. One entry per current Pacific day and permanent publishing
+remain enforced. Formatting is for new entries; existing entries are unchanged.
+
+Verification: twenty offline tests and eleven emulator tests pass. Callable
+round-trip tests preserve all three styles and reject mismatched runs. Browser
+fixture tests selected-word styling, combined styles, undo/redo, editor remount,
+viewer rendering, and 390px/320px mobile excerpts. The fixture is separate from
+Firebase and cannot publish. Production build passes; no live diary data changed.

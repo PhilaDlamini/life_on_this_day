@@ -96,7 +96,7 @@ Padding cells are `null`, empty dates render neutral day numbers, and populated
 dates render `EntryPreview`.
 
 `EntryPreview` chooses its markup from `post.type`. On phones, the calendar cells
-use compact icons. Each populated tile reports its clicked date through the
+show a compact text excerpt for words and an icon for audio. Each populated tile reports its clicked date through the
 `onSelect` callback. After all months load, `ArchiveHighlights` picks up to five
 unique entries from across the archive using a shuffle of copied date keys. Its
 local state keeps that selection stable while opening/closing entries. Reopening
@@ -158,7 +158,7 @@ No router or shared authentication context is needed for this one screen.
 
 ## Verification
 
-`npm test` runs seventeen focused offline tests using Node's built-in runner.
+`npm test` runs twenty focused offline tests using Node's built-in runner.
 The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
 leap years, six-week grids, daily title stability, and remote entry validation. Eleven emulator tests are skipped
 unless the emulator is running. Run under a timezone such
@@ -230,3 +230,21 @@ audio duration is decoded in the editor and validated as metadata by the server.
 `onPublished` closes the editor and refreshes the archive. The next moment can
 be published after the next Pacific midnight. A new callable function release
 requires its own scoped Firebase deployment, separate from GitHub Pages.
+
+
+## Formatted words
+
+`components/editor/TextEditor.jsx` owns Tiptap's editing surface, selection, and
+formatting toolbar; `EntryEditor` still owns the draft and publication lifecycle.
+`utils/textFormatting.js` converts the minimal editor document to portable runs
+and restores a draft after switching formats. The owner-only editor bundle
+contains the editing library; public readers only need the small renderer.
+
+A text post keeps its ordinary `text` string. When it contains emphasis, it also
+has `textRuns`: strings with optional bold/italic/underline flags. Shared server
+validation rejects unknown keys, invalid flags, and runs whose concatenation
+differs from `text`. `FormattedText.jsx` renders these using React's escaped text
+and semantic markup, with plain text as the fallback for old entries. No HTML
+string is injected into the document. Tests cover conversion, validation, and
+the callable save/read round trip; `tests/fixtures/text-editor.html` is an
+isolated, nonpublishing browser fixture for selection and rendering checks.

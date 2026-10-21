@@ -38,18 +38,24 @@ emulatorTest("callable rejects visitors, other accounts, and dates outside today
   }
   const invalid = await publish(journalDay(), { type: "audio", audioURL: "https://example.com/audio", duration: 61 });
   assert.equal(invalid.body.error.status, "INVALID_ARGUMENT");
+  const malformed = await publish(journalDay(), { type: "text", text: "Safe", textRuns: [{ text: "Different", bold: true }] });
+  assert.equal(malformed.body.error.status, "INVALID_ARGUMENT");
 });
 
 emulatorTest("concurrent callable publications keep exactly one entry and reject replacement", async () => {
   const date = journalDay();
   const responses = await Promise.all([
-    publish(date, { type: "text", text: "First device." }),
-    publish(date, { type: "text", text: "Second device." }),
+    publish(date, { type: "text", text: "First device.", textRuns: [{ text: "First", bold: true, italic: true, underline: true }, { text: " device." }] }),
+    publish(date, { type: "text", text: "Second device.", textRuns: [{ text: "Second", bold: true, italic: true, underline: true }, { text: " device." }] }),
   ]);
   assert.equal(responses.filter((response) => response.status === 200).length, 1);
   assert.equal(responses.filter((response) => response.body.error?.status === "ALREADY_EXISTS").length, 1);
   const response = await fetch(`http://${process.env.FIREBASE_DATABASE_EMULATOR_HOST}/posts/${date}.json?ns=${project}`);
   const original = await response.json();
   assert.ok(["First device.", "Second device."].includes(original.text));
+  assert.equal(original.textRuns[0].bold, true);
+  assert.equal(original.textRuns[0].italic, true);
+  assert.equal(original.textRuns[0].underline, true);
+  assert.equal(original.textRuns.map((run) => run.text).join(""), original.text);
   assert.equal((await publish(date, { type: "text", text: "Replacement." })).body.error.status, "ALREADY_EXISTS");
 });

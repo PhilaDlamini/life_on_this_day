@@ -1,4 +1,5 @@
-import { Image, Play, Quote } from "lucide-react";
+import { Image, Play } from "lucide-react";
+import FormattedText from "./FormattedText.jsx";
 import Waveform from "./Waveform.jsx";
 import { entryTypes } from "../data/entryTypes.js";
 import { dateKey } from "../utils/calendar.js";
@@ -24,8 +25,7 @@ export default function EntryPreview({ date, post, onSelect }) {
       )}
       {post.type === "text" && (
         <>
-          <Quote className="text-mark" size={21} strokeWidth={1.4} />
-          <span className="text-snippet">{post.text}</span>
+          <span className="text-snippet"><FormattedText {...post} /></span>
         </>
       )}
       {post.type === "audio" && (

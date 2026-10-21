@@ -1,0 +1,35 @@
+.text-toolbar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.text-toolbar button {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #292d2b;
+  font-size: 16px;
+}
+
+.text-toolbar button[aria-pressed='true'] {
+  background: #f7e9e2;
+  color: var(--red);
+}
+
+.rich-text-input {
+  min-height: 180px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e8dfd7;
+  color: #111;
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.rich-text-input p { margin: 0; }
+.rich-text-input:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; }
+.text-editor .editor-hint { margin-bottom: 0; }

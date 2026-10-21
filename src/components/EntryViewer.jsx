@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight, Headphones, X } from "lucide-react";
+import FormattedText from "./FormattedText.jsx";
 import Waveform from "./Waveform.jsx";
 import { entryTypes } from "../data/entryTypes.js";
 import { dateFromKey } from "../utils/calendar.js";
@@ -82,7 +83,7 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
           {/* Remount media when the date changes so the previous recording stops. */}
           <div key={selectedDate} className={`viewer-content viewer-${post.type}`}>
             {post.type === "photo" && <img src={post.photoURL} alt={post.alt} />}
-            {post.type === "text" && <p>{post.text}</p>}
+            {post.type === "text" && <p><FormattedText {...post} /></p>}
             {post.type === "audio" && (
               <>
                 <Headphones size={28} strokeWidth={1.5} />

@@ -11,6 +11,16 @@
     "test:rules": "firebase emulators:exec --only auth,functions,database,storage --project demo-life-on-this-day \"node --test tests/firebase.rules.test.js tests/publishing.integration.test.js\""
   },
   "dependencies": {
+    "@tiptap/extension-bold": "^3.32.0",
+    "@tiptap/extension-document": "^3.32.0",
+    "@tiptap/extension-hard-break": "^3.32.0",
+    "@tiptap/extension-italic": "^3.32.0",
+    "@tiptap/extension-paragraph": "^3.32.0",
+    "@tiptap/extension-text": "^3.32.0",
+    "@tiptap/extension-underline": "^3.32.0",
+    "@tiptap/extensions": "^3.32.0",
+    "@tiptap/pm": "^3.32.0",
+    "@tiptap/react": "^3.32.0",
     "firebase": "^13.0.0",
     "lucide-react": "^1.59.0",
     "react": "^19.3.1",

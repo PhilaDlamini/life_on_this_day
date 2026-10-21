@@ -7,6 +7,8 @@ import { dateFromKey } from "../../utils/calendar.js";
 import { dateFormat } from "../../utils/formatDate.js";
 import { prepareAudio, preparePhoto } from "../../utils/prepareMedia.js";
 import { saveEntry } from "../../firebase/saveEntry.js";
+import TextEditor from "./TextEditor.jsx";
+import FormattedText from "../FormattedText.jsx";
 import Waveform from "../Waveform.jsx";
 import "./EntryEditor.css";
 
@@ -16,7 +18,8 @@ export default function EntryEditor({ posts, onClose, onPublished }) {
   const preparation = useRef(0);
   const date = useToday();
   const [type, setType] = useState("text");
-  const [text, setText] = useState("");
+  const [words, setWords] = useState({ text: "", textRuns: [] });
+  const { text, textRuns } = words;
   const [alt, setAlt] = useState("");
   const [media, setMedia] = useState(null);
   const [preparing, setPreparing] = useState(false);
@@ -76,11 +79,12 @@ export default function EntryEditor({ posts, onClose, onPublished }) {
     setError("");
     if (date !== journalDay()) { setError("A new Pacific day has begun. Review your draft, then try again."); return; }
     if (type === "text" && !text.trim()) { setError("Write something before publishing."); return; }
+    if (type === "text" && text.length > 20000) { setError("Keep your entry within 20,000 characters."); return; }
     if (type !== "text" && !media) { setError("Choose a file before publishing."); return; }
     if (!window.confirm(`Keep this moment for ${date}? Once published, it cannot be edited or deleted.`)) return;
     setSaving(true);
     try {
-      const publishedDate = await saveEntry({ date, type, text, alt, media, onProgress: setProgress });
+      const publishedDate = await saveEntry({ date, type, text, textRuns, alt, media, onProgress: setProgress });
       onPublished(publishedDate);
     } catch (error) {
       setError(["functions/already-exists", "functions/failed-precondition", "functions/invalid-argument", "functions/permission-denied"].includes(error.code)
@@ -111,9 +115,9 @@ export default function EntryEditor({ posts, onClose, onPublished }) {
               ))}
             </div>
             {type === "text" ? (
-              <label className="editor-label">Your words
-                <textarea value={text} onChange={(event) => setText(event.target.value)} maxLength={20000} rows={7} placeholder="Whatever stayed with you." required />
-              </label>
+              <div className="editor-label">Your words
+                <TextEditor value={words} onChange={setWords} disabled={busy} />
+              </div>
             ) : (
               <>
                 <label className="editor-label">{type === "photo" ? "Choose a photo" : "Choose a recording"}
@@ -134,7 +138,7 @@ export default function EntryEditor({ posts, onClose, onPublished }) {
         {preparing && <p role="status" className="editor-hint">Preparing your {type === "photo" ? "photo" : "recording"}…</p>}
         {!occupied && <section className="editor-preview" aria-label="Entry preview">
           {((type === "text" && text.trim()) || source) && <h3>Preview</h3>}
-          {type === "text" && text.trim() && <p>{text}</p>}
+          {type === "text" && text.trim() && <p><FormattedText text={text} textRuns={textRuns} /></p>}
           {type === "photo" && source && <img src={source} alt={alt} />}
           {type === "photo" && media && <p className="editor-hint">Photo ready · {Math.ceil((media.photo.size + media.thumbnail.size) / 1024)} KB total</p>}
           {type === "audio" && source && (

@@ -14,7 +14,10 @@ the moment is final: published entries cannot be edited, replaced, or deleted.
 Only one moment can be kept per Pacific calendar day. Return tomorrow to keep
 another. Failed saves retain the form and leave existing entries intact.
 
-- **In words:** up to 20,000 characters.
+- **In words:** up to 20,000 characters. Select words and use **B**, *I*, or
+  underline in the toolbar, or choose a style before typing. Formatting and line
+  breaks are preserved in the preview and published entry. Plain-text entries
+  from earlier versions continue to display unchanged.
 - **In light:** choose a photo up to 20 MB. The browser resizes it to at most
   1,600 pixels on the long edge, re-encodes JPEG without original EXIF/location
   metadata, and targets 600 KB or less. The hard cap is 800 KB, plus a 360-pixel
@@ -94,7 +97,7 @@ Firebase Auth session. Basic flow follows the official
 
 ## Checks
 
-`npm test` runs seventeen offline date/content/media-limit/highlight/publishing tests. Emulator-only rule tests are
+`npm test` runs twenty offline date/content/media-limit/highlight/publishing/formatting tests. Emulator-only rule tests are
 explicitly skipped in that command. With Firebase CLI and Java 21+ on PATH, run:
 
 ```sh
@@ -149,6 +152,9 @@ runs offline tests, builds with `/life_on_this_day/` as its base path, and publi
 the artifact to GitHub Pages on application pushes to `main`. Documentation-only
 pushes do not rebuild the site. Firebase rule changes require their separate
 scoped release command above; the website workflow does not deploy cloud rules.
+
+An isolated browser formatting fixture is available locally at
+`/tests/fixtures/text-editor.html`; it never connects to Firebase or publishes.
 
 Before a release, run `npm test`, `npm run test:rules`, and `npm run build`.
 A local Pages-path smoke build is `BASE_PATH=/life_on_this_day/ npm run build`.

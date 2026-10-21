@@ -51,7 +51,7 @@
   color: var(--muted);
 }
 
-.editor-label input, .editor-label textarea {
+.editor-label input {
   width: 100%;
   min-width: 0;
   padding: 10px 0;
@@ -64,13 +64,7 @@
   font-size: 16px;
 }
 
-.editor-label textarea {
-  resize: vertical;
-  min-height: 180px;
-  line-height: 1.7;
-}
-
-.editor-label input:focus-visible, .editor-label textarea:focus-visible {
+.editor-label input:focus-visible {
   outline: 2px solid var(--red);
   outline-offset: 5px;
 }
@@ -193,10 +187,6 @@
   margin: 0 0 22px;
   font-size: 12px;
   color: var(--muted);
-}
-
-.editor-label textarea::placeholder {
-  color: #a39c94;
 }
 
 .editor-label input[type='file']::file-selector-button {

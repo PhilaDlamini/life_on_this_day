@@ -3,11 +3,12 @@ import { commitPost } from "./publish.js";
 import { uploadMedia } from "./storage.js";
 
 // Files finish uploading before the date is sealed. Existing moments are never replaced.
-export async function saveEntry({ date, type, text, alt, media, onProgress }) {
+export async function saveEntry({ date, type, text, textRuns, alt, media, onProgress }) {
   if (date !== journalDay()) throw new Error("A new Pacific day has begun. Review your draft and publish it for today.");
   let post;
   if (type === "text") {
-    post = { type, text: text.trim() };
+    post = { type, text };
+    if (textRuns?.some((run) => run.bold || run.italic || run.underline)) post.textRuns = textRuns;
   } else {
     if (!media) throw new Error("Choose a file before publishing.");
     const folder = `published/${date}/${crypto.randomUUID()}`;
