@@ -453,3 +453,16 @@ Release verified: publishing function update succeeded; commits b6b5d4c and
 6624304 pushed, with successful Pages runs 39527095527 and 39527311201. The
 mobile excerpt and shared renderer were checked locally at 390px and 320px.
 No live entry was created or modified for testing.
+
+
+## Formatting toolbar visual refinement — October 20, 2026
+
+Phila requested the original Publish button and Apple Notes-style B/I/U controls.
+The production Publish button already retained its original green pill styling;
+a plain control in the earlier screenshot belonged to the isolated test fixture.
+The toolbar now uses one compact warm-gray segmented group, consistent Lucide
+icons, black emphasis, and a subtle paper-colored selected state. The original
+“Whatever stayed with you.” placeholder returns, and formatting instructions
+remain accessible without adding visible clutter. Publishing behavior and
+formatting persistence are unchanged. Verify using the real composer component
+inside a local fixture that intercepts form submission.

@@ -155,6 +155,8 @@ scoped release command above; the website workflow does not deploy cloud rules.
 
 An isolated browser formatting fixture is available locally at
 `/tests/fixtures/text-editor.html`; it never connects to Firebase or publishes.
+`/tests/fixtures/composer.html` shows the real composer, with form submission
+intercepted before the publishing handler runs.
 
 Before a release, run `npm test`, `npm run test:rules`, and `npm run build`.
 A local Pages-path smoke build is `BASE_PATH=/life_on_this_day/ npm run build`.

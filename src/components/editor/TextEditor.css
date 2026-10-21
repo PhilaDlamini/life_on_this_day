@@ -1,22 +1,29 @@
 .text-toolbar {
-  display: flex;
-  gap: 4px;
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
   margin-bottom: 8px;
+  border-radius: 10px;
+  background: #efede8;
 }
 
 .text-toolbar button {
   width: 40px;
-  height: 40px;
+  height: 36px;
   border: 0;
-  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
   background: transparent;
   color: #292d2b;
   font-size: 16px;
 }
 
 .text-toolbar button[aria-pressed='true'] {
-  background: #f7e9e2;
-  color: var(--red);
+  background: #fffdf9;
+  color: #111;
+  box-shadow: 0 1px 3px rgb(42 35 30 / 12%);
 }
 
 .rich-text-input {
@@ -32,4 +39,10 @@
 
 .rich-text-input p { margin: 0; }
 .rich-text-input:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; }
-.text-editor .editor-hint { margin-bottom: 0; }
+.rich-text-input p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: #a39c94;
+  pointer-events: none;
+}
