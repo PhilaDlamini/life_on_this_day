@@ -448,3 +448,8 @@ Firebase and cannot publish. Production build passes; no live diary data changed
 The shared DM Sans font request includes real italic faces at weights 400–700;
 font synthesis is disabled, so semantic em tags alone were insufficient. This
 keeps italic and bold-italic text visibly correct in both editor and reader.
+
+Release verified: publishing function update succeeded; commits b6b5d4c and
+6624304 pushed, with successful Pages runs 39527095527 and 39527311201. The
+mobile excerpt and shared renderer were checked locally at 390px and 320px.
+No live entry was created or modified for testing.
