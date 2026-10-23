@@ -507,5 +507,8 @@ remove the React effect that replaced it with the rotating heading. The visible
 masthead continues its daily rotation and per-title emphasis.
 
 Phila also approved adding “Life on This Day” to the end of the visible title
-rotation, entirely black and upright. The rotation now repeats every eleven
+rotation. The rotation now repeats every eleven
 days; the permanent browser title remains unchanged.
+
+Phila refined this title's treatment to “Life on This *Day.*”, with Day in the
+same rustic italic accent used by the other emphasized titles.
