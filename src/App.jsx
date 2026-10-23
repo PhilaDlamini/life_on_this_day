@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import JournalHeader from "./components/JournalHeader.jsx";
 import MonthCalendar from "./components/MonthCalendar.jsx";
 import ArchiveHighlights from "./components/ArchiveHighlights.jsx";
@@ -22,10 +22,6 @@ export default function App() {
   const title = dailyTitle();
   const months = archiveMonths(posts, dateFromKey(journalDay()));
   const entryDates = Object.keys(posts).sort();
-
-  useEffect(() => {
-    document.title = title;
-  }, [title]);
 
   return (
     <>

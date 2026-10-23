@@ -497,3 +497,10 @@ title data records each accent explicitly; the daily rotation is unchanged.
 Phila requested removing the rust border around the entry viewer's X. Replace
 the shared focus outline on this button with a soft neutral circular background,
 keeping keyboard focus visible and the existing native dialog focus behavior.
+
+## Permanent browser title — October 22, 2026
+
+Phila selected the original “Life on This Day” as the permanent browser title
+for recognizable tabs and bookmarks. Keep the existing index.html title and
+remove the React effect that replaced it with the rotating heading. The visible
+masthead continues its daily rotation and per-title emphasis.
