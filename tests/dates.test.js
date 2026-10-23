@@ -39,12 +39,12 @@ test("a six-week month keeps every day", () => {
   assert.equal(days.filter(Boolean).length, 31);
 });
 
-test("the daily title is stable all day and visits all ten titles before repeating", () => {
+test("the daily title is stable all day and visits every title before repeating", () => {
   assert.equal(dailyTitle(new Date(2026, 9, 19, 0)), "As It Was");
   assert.equal(dailyTitle(new Date(2026, 9, 19, 23, 59)), "As It Was");
-  const cycle = Array.from({ length: 10 }, (_, index) => dailyTitle(new Date(2026, 9, 19 + index)));
+  const cycle = Array.from({ length: titles.length }, (_, index) => dailyTitle(new Date(2026, 9, 19 + index)));
   assert.deepEqual(cycle, titles);
-  assert.equal(dailyTitle(new Date(2026, 9, 29)), "As It Was");
+  assert.equal(dailyTitle(new Date(2026, 9, 19 + titles.length)), "As It Was");
   assert.ok(titles.includes(dailyTitle(new Date(2025, 0, 1))));
 });
 

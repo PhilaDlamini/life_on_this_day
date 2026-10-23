@@ -10,6 +10,7 @@ export const titleAccents = {
   "Passing Through": null,
   "Still Here": "Here",
   "A Few Things": null,
+  "Life on This Day": null,
 };
 
 export const titles = Object.keys(titleAccents);

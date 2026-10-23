@@ -61,9 +61,10 @@ Blaze plan; applicable free allowances do not guarantee zero cost forever.
 
 - The archive is the first screen, with a daily rotating title prominent.
   Rotate through As It Was, In Passing, Here, Lately, Small Hours, Day Notes,
-  Of Late, For the Record, Passing Through, Still Here, and A Few Things.
+  Of Late, For the Record, Passing Through, Still Here, A Few Things, and
+  Life on This Day.
   The visitor's local calendar date determines the title, so reopening or
-  refreshing on the same day keeps it consistent; the cycle repeats after ten days.
+  refreshing on the same day keeps it consistent; the cycle repeats after eleven days.
 - Vertically scrolling calendar, current local month first, then earlier months
   with entries in reverse chronological order. Skip empty past months and always
   display at least the current month. Mobile responsive, neutral empty days.
@@ -504,3 +505,7 @@ Phila selected the original “Life on This Day” as the permanent browser titl
 for recognizable tabs and bookmarks. Keep the existing index.html title and
 remove the React effect that replaced it with the rotating heading. The visible
 masthead continues its daily rotation and per-title emphasis.
+
+Phila also approved adding “Life on This Day” to the end of the visible title
+rotation, entirely black and upright. The rotation now repeats every eleven
+days; the permanent browser title remains unchanged.

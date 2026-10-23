@@ -62,7 +62,7 @@ and shared icon buttons.
 
 `App` receives published posts from `useArchive()` and calls `dailyTitle()`. The title list is data;
 selection by date is a separate utility. A local calendar day maps to one title,
-starting with As It Was on October 19, 2026, and repeating after ten days.
+starting with As It Was on October 19, 2026, and repeating after eleven days.
 Refreshing does not randomize it. The calculation uses local year/month/day
 parts, then counts civil days without daylight-saving drift. It runs when App
 renders; there is no background midnight timer.
