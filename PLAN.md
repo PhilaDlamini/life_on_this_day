@@ -491,3 +491,9 @@ Lately, For the Record, and Still Here retain their final word in the rustic
 italic accent. Small Hours, Day Notes, Of Late, Passing Through, and A Few
 Things render entirely upright in the normal black heading color. The ordered
 title data records each accent explicitly; the daily rotation is unchanged.
+
+## Viewer close button — October 22, 2026
+
+Phila requested removing the rust border around the entry viewer's X. Replace
+the shared focus outline on this button with a soft neutral circular background,
+keeping keyboard focus visible and the existing native dialog focus behavior.
