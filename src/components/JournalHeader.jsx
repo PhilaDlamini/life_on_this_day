@@ -1,9 +1,9 @@
 import { Sun } from "lucide-react";
+import { titleAccents } from "../data/titles.js";
 import "./JournalHeader.css";
 
-// Keep the final word in the journal's original italic accent.
 export default function JournalHeader({ title, children }) {
-  const titleBreak = title.lastIndexOf(" ");
+  const accent = titleAccents[title];
 
   return (
     <>
@@ -16,7 +16,9 @@ export default function JournalHeader({ title, children }) {
       </header>
       <section className="introduction" aria-labelledby="site-title">
         <h1 id="site-title">
-          {title.slice(0, titleBreak)} <em>{title.slice(titleBreak + 1)}.</em>
+          {accent
+            ? <>{title.slice(0, -accent.length)}<em>{accent}.</em></>
+            : `${title}.`}
         </h1>
         <p>The ordinary things, kept.</p>
       </section>

@@ -483,3 +483,11 @@ The UI, formatting controls, Pacific date policy, and immutable entries remain
 unchanged. Checks: twenty-one offline tests, eleven emulator tests, and the
 production build pass, including canonical storage without duplicate fields
 and preserved formatting for both legacy and current client submissions.
+
+## Title emphasis — October 22, 2026
+
+Phila requested choosing emphasis per title. As It Was, In Passing, Here,
+Lately, For the Record, and Still Here retain their final word in the rustic
+italic accent. Small Hours, Day Notes, Of Late, Passing Through, and A Few
+Things render entirely upright in the normal black heading color. The ordered
+title data records each accent explicitly; the daily rotation is unchanged.
