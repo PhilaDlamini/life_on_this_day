@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { journalDay } from "../../functions/shared/journalDay.js";
 
-// Keep an editor left open overnight on today's date without losing its draft.
+// Follow Pacific midnight for the editor and archive, also after a sleeping tab wakes.
 export default function useToday() {
   const [today, setToday] = useState(() => journalDay());
   useEffect(() => {

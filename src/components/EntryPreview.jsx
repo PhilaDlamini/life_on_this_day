@@ -23,11 +23,7 @@ export default function EntryPreview({ date, post, onSelect }) {
           <span className="photo-marker"><Image size={14} /></span>
         </>
       )}
-      {post.type === "text" && (
-        <>
-          <span className="text-snippet"><FormattedText {...post} /></span>
-        </>
-      )}
+      {post.type === "text" && <span className="text-snippet"><FormattedText {...post} /></span>}
       {post.type === "audio" && (
         <>
           <span className="audio-symbol"><Play size={16} fill="currentColor" /></span>

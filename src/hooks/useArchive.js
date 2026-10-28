@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getArchiveDates, subscribeToMonth } from "../firebase/database.js";
-import { journalDay } from "../../functions/shared/journalDay.js";
+import useToday from "./useToday.js";
 import { archiveMonths, dateFromKey, dateKey } from "../utils/calendar.js";
 
 // Own the read lifecycle; calendar components remain independent of Firebase.
 export default function useArchive() {
+  const currentMonth = useToday().slice(0, 7);
   const [posts, setPosts] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -28,7 +29,7 @@ export default function useArchive() {
         const dates = await getArchiveDates(controller.signal);
         if (!active) return;
         const dateMap = Object.fromEntries(dates.map((date) => [date, true]));
-        const months = archiveMonths(dateMap, dateFromKey(journalDay())).map((month) => dateKey(month).slice(0, 7));
+        const months = archiveMonths(dateMap, dateFromKey(`${currentMonth}-01`)).map((month) => dateKey(month).slice(0, 7));
         const pending = new Set(months);
         setPosts({});
 
@@ -66,7 +67,7 @@ export default function useArchive() {
       controller.abort();
       unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [attempt]);
+  }, [attempt, currentMonth]);
 
   return { posts, loading, error, retry: () => setAttempt((value) => value + 1) };
 }

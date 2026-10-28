@@ -35,10 +35,14 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
     // Also runs on unmount. Native close restores focus to the opening button.
     return () => {
       element.close();
-      setExpandedDate(null);
       document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
+
+  function closeEntry() {
+    setExpandedDate(null);
+    onSelect(null);
+  }
 
   function navigate(direction) {
     const nextDate = entryDates[index + direction];
@@ -61,7 +65,7 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
     const bounds = dialog.current.getBoundingClientRect();
     const outside = event.clientX < bounds.left || event.clientX > bounds.right
       || event.clientY < bounds.top || event.clientY > bounds.bottom;
-    if (outside) onSelect(null);
+    if (outside) closeEntry();
   }
 
   return (
@@ -73,12 +77,11 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
       onCancel={(event) => {
         // Close through React so native Escape and the close button share one path.
         event.preventDefault();
-        if (isExpanded) setExpandedDate(null);
-        else onSelect(null);
+        closeEntry();
       }}
       onClose={() => {
         // An earlier close event must not clear a newly reopened dialog.
-        if (!dialog.current.open) onSelect(null);
+        if (!dialog.current.open) closeEntry();
       }}
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
@@ -90,12 +93,12 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
               <span className={`entry-kind kind-${post.type}`}>{entryTypes[post.type]}</span>
               <h2 id="entry-date">{dateFormat.format(dateFromKey(selectedDate))}</h2>
             </div>
-            <button className="icon-button viewer-close" title="Close entry" aria-label="Close entry" onClick={() => onSelect(null)}>
+            <button className="icon-button viewer-close" title="Close entry" aria-label="Close entry" onClick={closeEntry}>
               <X size={21} />
             </button>
           </header>}
           {isExpanded && (
-            <button ref={fullscreenClose} className="icon-button viewer-close fullscreen-close" aria-label="Return to entry" title="Return to entry" onClick={() => setExpandedDate(null)}>
+            <button ref={fullscreenClose} className="icon-button viewer-close fullscreen-close" aria-label="Close entry" title="Close entry" onClick={closeEntry}>
               <X size={21} />
             </button>
           )}

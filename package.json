@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test",
-    "test:rules": "firebase emulators:exec --only auth,functions,database,storage --project demo-life-on-this-day \"node --test tests/firebase.rules.test.js tests/publishing.integration.test.js\""
+    "test:rules": "firebase emulators:exec --only auth,functions,database,storage --project demo-life-on-this-day \"node --test --test-concurrency=1 tests/firebase.rules.test.js tests/publishing.integration.test.js\""
   },
   "dependencies": {
     "@tiptap/extension-bold": "^3.32.0",

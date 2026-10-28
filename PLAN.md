@@ -97,14 +97,14 @@ records AND draft media must stay inaccessible to public viewers.
 {
   "posts": {
     "2026-10-19": { "type": "photo", "photoURL": "https://..." },
-    "2026-10-20": { "type": "text", "text": "Something worth remembering." },
+    "2026-10-20": { "type": "text", "runs": [{ "text": "Something worth remembering." }] },
     "2026-10-21": { "type": "audio", "audioURL": "https://...", "duration": 30 }
   }
 }
 ```
 
-Database rules enforce one matching content field per type. Only the owner's UID
-may write. Public reads apply to published posts, not the database root. Private
+The server publisher validates one content format and the verified owner's UID.
+Database rules deny direct client writes. Public reads apply to published posts, not the database root. Private
 drafts, when implemented, use drafts/{ownerUID}/{date} and owner-only media paths.
 
 ## Saving, Media, and Reliability
@@ -525,3 +525,29 @@ closing the entry clears expansion. No Firebase or publishing changes.
 
 Verified the expanded photo, matching close control, and focus restoration on
 desktop and a 390px phone viewport. Offline checks and production build pass.
+
+## Code health review — October 27, 2026
+
+Reviewed page composition, components/styles, hook cleanup, Firebase adapters,
+shared validation, server publishing, rules, dependencies, tests, and documentation.
+The existing component/hook/I/O/shared-policy separation remains appropriate.
+
+- Refresh archive subscriptions when an open tab crosses into a new Pacific
+  month, reusing useToday. Verified in an isolated browser harness with a fake
+  clock and mock reads: October/September listeners unsubscribe, then November,
+  October, and September subscribe. No production writes are involved.
+- Update the backend's transitive body-parser dependency from 2.3.0 to 2.4.0
+  to resolve the reported compressed-request denial-of-service advisory. Both
+  frontend and backend npm audits now report zero known vulnerabilities.
+- Run the two emulator test files sequentially so their shared demo database
+  initialization cannot race with callable publication tests.
+- Remove unused sample-label CSS and an unnecessary preview fragment; correct
+  walkthrough descriptions of titles, canonical runs, and server permissions.
+- Phila approved closing the entire entry directly from the expanded photo.
+  The full-screen X and Escape now return to the calendar. One close handler
+  clears expansion and selection; effect cleanup only closes the modal and
+  restores scrolling. Browser-checked direct dismissal, focus restoration,
+  and reopening in the normal entry view.
+
+Validation: twenty-one offline and eleven emulator checks, production build,
+and both dependency audits. No live diary entries or media changed during review.

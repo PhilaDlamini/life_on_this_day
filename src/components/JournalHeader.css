@@ -22,12 +22,6 @@
   color: var(--red);
 }
 
-.sample-label {
-  font-size: 11px;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
 .introduction {
   padding: 36px 0 38px;
 }
@@ -59,10 +53,6 @@
   .masthead {
     font-size: 11px;
     gap: 8px;
-  }
-
-  .sample-label {
-    font-size: 9px;
   }
 
   .introduction {

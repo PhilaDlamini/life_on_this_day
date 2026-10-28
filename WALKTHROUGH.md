@@ -41,7 +41,7 @@ src/
   data/
     samplePosts.js         Fictional entries and sample media references
     sample-waveform.json   Amplitudes from the synthesized sample recording
-    titles.js              Ten daily titles
+    titles.js              Eleven daily titles and their individual accents
     entryTypes.js          Shared human-readable format labels
   utils/
     calendar.js            Local date keys, calendar cells, archive months
@@ -67,8 +67,9 @@ Refreshing does not randomize it. The calculation uses local year/month/day
 parts, then counts civil days without daylight-saving drift. It runs when App
 renders; there is no background midnight timer.
 
-`JournalHeader` receives the title as a prop and renders the last word in the
-original italic accent. An effect in `App` sets the browser tab title. The footer
+`JournalHeader` receives the title as a prop and looks up its optional italic
+accent in the title data. Plain titles stay upright and black. The browser tab
+keeps the permanent “Life on This Day” title from `index.html`. The footer
 shows “Phila Dlamini * 2026” alongside the existing personal tagline.
 
 An entry is keyed by its date, with one format:
@@ -76,7 +77,7 @@ An entry is keyed by its date, with one format:
 ```js
 "2026-10-18": {
   type: "text",
-  text: "I took the long way home...",
+  runs: [{ text: "I took the long way home..." }],
 }
 ```
 
@@ -86,7 +87,7 @@ are not an audio player and do not fetch or start a recording.
 
 ## 3. Rendering the archive
 
-`archiveMonths(posts)` always includes the current local month, adds earlier
+`archiveMonths(posts, today)` receives today's Pacific date, includes its month, adds earlier
 months with entries, and orders the result newest first. Empty past months and
 future months are omitted. This keeps an empty archive visible as one calendar.
 
@@ -135,7 +136,9 @@ Left/right arrows navigate the ordered entry dates, including across months.
 Audio controls retain their own arrow-key behavior. The content's React `key`
 is the selected date, so changing entries removes the previous audio element.
 Audio uses native controls and never autoplays. Photos use `object-fit: contain`
-in the viewer so the whole image remains visible.
+in the viewer so the whole image remains visible. Tapping a photo expands the
+same native dialog to a dark full-screen view. X or Escape closes the entry
+directly to the calendar, restoring focus to its opening button.
 
 ## Where to make common changes
 
@@ -181,12 +184,13 @@ that month's entries in React state. Invalid dates/content are ignored. The hook
 also owns request cancellation, unsubscribe cleanup, loading, timeout, and retry.
 The current empty month remains visible, and read errors do not masquerade as an
 empty journal. Newly populated older months are discovered when opening/retrying.
+`useToday` also refreshes subscriptions when the Pacific month changes.
 
 `useOwnerAuth` observes Firebase's session and exposes sign-in/sign-out actions.
 The Google popup result must match the pinned owner UID. `OwnerAccess` displays
-that state. Its check controls presentation; `database.rules.json` enforces the
-actual write permission, including verified email and Google provider, even if
-someone bypasses the interface. Private paths remain denied in this checkpoint.
+that state. Its check controls presentation; `database.rules.json` denies all
+direct client writes. The server publisher verifies the owner UID, verified
+email, and Google provider independently. Private paths remain denied.
 
 The owner UID is a public identifier, not a secret. Keep its configuration and
 rule value aligned if the owner ever changes. Read README.md for local domains,

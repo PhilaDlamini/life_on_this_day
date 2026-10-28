@@ -89,6 +89,7 @@ pending requests are cleaned up on unmount/retry. Loading, timeout, and retry
 states keep a read failure distinct from an empty journal. Date discovery happens
 on opening/retrying; new entries in an already subscribed month update live. A
 newly populated older month appears on reopening/retrying the archive.
+An open archive refreshes its month subscriptions at Pacific month rollover.
 
 The owner button opens Google sign-in and checks the returned UID. Other accounts
 are signed out and cannot write under the rules. Refreshing restores the normal
@@ -105,6 +106,7 @@ npm ci --prefix functions
 npm run test:rules
 ```
 
+The two test files run sequentially because they share an emulator database.
 This starts Auth, Functions, Database, and Storage emulators under
 **demo-life-on-this-day** and runs eleven permission/publishing tests. All writes in these tests target the emulator, never
 the live journal. Coverage includes public reads, denied private/root reads,
@@ -169,7 +171,7 @@ Firebase browser configuration and owner UID are public identification values.
 New text entries store one canonical `runs` array, for example:
 
 ```json
-{ "type": "text", "runs": [{ "text": "A " }, { "text": "quiet", "italic": true }, { "text": "day." }] }
+{ "type": "text", "runs": [{ "text": "A " }, { "text": "quiet", "italic": true }, { "text": " day." }] }
 ```
 
 There is no duplicate plain-text field. Text is derived by joining the runs;
