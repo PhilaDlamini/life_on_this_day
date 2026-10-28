@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Headphones, X } from "lucide-react";
 import FormattedText from "./FormattedText.jsx";
 import Waveform from "./Waveform.jsx";
@@ -10,9 +10,19 @@ import "./EntryViewer.css";
 // A controlled native dialog: React owns selection, the browser manages modal focus.
 export default function EntryViewer({ posts, entryDates, selectedDate, onSelect }) {
   const dialog = useRef(null);
+  const photoButton = useRef(null);
+  const fullscreenClose = useRef(null);
+  const [expandedDate, setExpandedDate] = useState(null);
   const post = posts[selectedDate];
   const index = entryDates.indexOf(selectedDate);
   const isOpen = Boolean(post);
+  const isExpanded = isOpen && post.type === "photo" && expandedDate === selectedDate;
+
+  useEffect(() => {
+    if (!isExpanded) return;
+    fullscreenClose.current.focus();
+    return () => photoButton.current?.focus();
+  }, [isExpanded]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -25,6 +35,7 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
     // Also runs on unmount. Native close restores focus to the opening button.
     return () => {
       element.close();
+      setExpandedDate(null);
       document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
@@ -35,6 +46,7 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
   }
 
   function handleKeyDown(event) {
+    if (isExpanded) return;
     // Let native audio controls use arrow keys for seeking and volume.
     if (["AUDIO", "INPUT"].includes(event.target.tagName)) return;
 
@@ -55,12 +67,14 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
   return (
     <dialog
       ref={dialog}
-      className="entry-dialog"
-      aria-labelledby="entry-date"
+      className={`entry-dialog${isExpanded ? " photo-fullscreen" : ""}`}
+      aria-labelledby={isExpanded ? undefined : "entry-date"}
+      aria-label={isExpanded ? "Full screen photograph" : undefined}
       onCancel={(event) => {
         // Close through React so native Escape and the close button share one path.
         event.preventDefault();
-        onSelect(null);
+        if (isExpanded) setExpandedDate(null);
+        else onSelect(null);
       }}
       onClose={() => {
         // An earlier close event must not clear a newly reopened dialog.
@@ -71,18 +85,28 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
     >
       {post && (
         <>
-          <header className="viewer-header">
+          {!isExpanded && <header className="viewer-header">
             <div>
               <span className={`entry-kind kind-${post.type}`}>{entryTypes[post.type]}</span>
               <h2 id="entry-date">{dateFormat.format(dateFromKey(selectedDate))}</h2>
             </div>
-            <button className="icon-button" title="Close entry" aria-label="Close entry" onClick={() => onSelect(null)}>
+            <button className="icon-button viewer-close" title="Close entry" aria-label="Close entry" onClick={() => onSelect(null)}>
               <X size={21} />
             </button>
-          </header>
+          </header>}
+          {isExpanded && (
+            <button ref={fullscreenClose} className="icon-button viewer-close fullscreen-close" aria-label="Return to entry" title="Return to entry" onClick={() => setExpandedDate(null)}>
+              <X size={21} />
+            </button>
+          )}
           {/* Remount media when the date changes so the previous recording stops. */}
           <div key={selectedDate} className={`viewer-content viewer-${post.type}`}>
-            {post.type === "photo" && <img src={post.photoURL} alt={post.alt} />}
+            {post.type === "photo" && (isExpanded
+              ? <img src={post.photoURL} alt={post.alt} />
+              : <button ref={photoButton} className="viewer-photo-button" aria-label="View photo full screen" onClick={() => setExpandedDate(selectedDate)}>
+                  <img src={post.photoURL} alt={post.alt} />
+                </button>
+            )}
             {post.type === "text" && <p><FormattedText {...post} /></p>}
             {post.type === "audio" && (
               <>
@@ -94,7 +118,7 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
               </>
             )}
           </div>
-          <footer className="viewer-footer">
+          {!isExpanded && <footer className="viewer-footer">
             <div className="viewer-navigation">
               <button className="icon-button" title="Previous entry" aria-label="Previous entry" disabled={index === 0} onClick={() => navigate(-1)}>
                 <ArrowLeft size={19} />
@@ -104,7 +128,7 @@ export default function EntryViewer({ posts, entryDates, selectedDate, onSelect 
                 <ArrowRight size={19} />
               </button>
             </div>
-          </footer>
+          </footer>}
         </>
       )}
     </dialog>

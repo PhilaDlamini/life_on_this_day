@@ -512,3 +512,16 @@ days; the permanent browser title remains unchanged.
 
 Phila refined this title's treatment to “Life on This *Day.*”, with Day in the
 same rustic italic accent used by the other emphasized titles.
+
+## Full-screen photo viewing — October 27, 2026
+
+Phila approved tapping the photo inside an entry dialog to expand it into a
+dark, viewport-filling photo view. Reuse the native dialog for focus trapping
+and scroll locking; keep the image uncropped. The full-screen X shares the
+entry close button's icon size and neutral circular treatment. X or Escape
+returns to the entry and restores focus to the photo; another Escape closes
+the entry and restores the calendar button. Navigating to another date or
+closing the entry clears expansion. No Firebase or publishing changes.
+
+Verified the expanded photo, matching close control, and focus restoration on
+desktop and a 390px phone viewport. Offline checks and production build pass.

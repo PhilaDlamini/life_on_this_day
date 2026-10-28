@@ -23,13 +23,13 @@
   padding: 24px 28px;
 }
 
-.viewer-header .icon-button {
+.entry-dialog .viewer-close {
   border: 0;
   border-radius: 50%;
 }
 
 /* Dialog autofocus stays visible without the shared rust outline. */
-.viewer-header .icon-button:focus-visible {
+.entry-dialog .viewer-close:focus-visible {
   outline: none;
   background: #e2e7df;
 }
@@ -74,6 +74,18 @@
   max-height: 65dvh;
   border-radius: 14px;
   object-fit: contain;
+}
+
+.viewer-photo-button {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  cursor: zoom-in;
 }
 
 .viewer-text {
@@ -170,4 +182,44 @@
   .viewer-navigation {
     gap: 3px;
   }
+}
+
+/* Expand the existing modal so focus trapping and scroll locking stay native. */
+.entry-dialog.photo-fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 16px;
+  border: 0;
+  border-radius: 0;
+  background: #111;
+  color: #fff;
+  overflow: hidden;
+}
+
+.photo-fullscreen .viewer-photo {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  align-items: center;
+}
+
+.photo-fullscreen .viewer-photo img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 0;
+}
+
+.fullscreen-close {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+}
+
+.fullscreen-close:hover:not(:disabled),
+.fullscreen-close:focus-visible {
+  color: #292d2b;
 }
