@@ -574,3 +574,8 @@ quiet neutral dot separators with compact spacing on phones.
 Phila refined the legend to use the same muted gray as the adjacent month/year
 caption for all three labels. Remove format-specific colors from this legend;
 the shared calendar-caption style supplies its color and typography.
+
+For exact caption consistency, render the format labels and literal dot
+separators in one plain span, matching the adjacent date span. Remove the
+legend's nested flex layout and all dedicated legend styles. Browser inspection
+confirmed matching DM Sans, 400 weight, size, line height, and muted color.

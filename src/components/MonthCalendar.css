@@ -62,22 +62,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.format-key {
-  display: flex;
-  gap: 8px;
-}
-
-.format-key > span {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.format-key > span + span::before {
-  content: "·";
-  color: var(--muted);
-}
-
 .empty-month {
   border: 1px solid var(--line);
   border-top: 0;
@@ -111,14 +95,6 @@
   .weekdays span {
     font-size: 9px;
     padding-left: 6px;
-  }
-
-  .format-key {
-    gap: 6px;
-  }
-
-  .format-key > span {
-    gap: 6px;
   }
 
   .calendar-caption {

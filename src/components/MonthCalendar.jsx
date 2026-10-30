@@ -47,11 +47,7 @@ export default function MonthCalendar({ month, posts, entryDates, onSelect, load
       )}
       <div className="calendar-caption">
         <span>{String(month.getMonth() + 1).padStart(2, "0")} / {month.getFullYear()}</span>
-        <div className="format-key">
-          <span>{entryTypes.photo}</span>
-          <span>{entryTypes.text}</span>
-          <span>{entryTypes.audio}</span>
-        </div>
+        <span>{[entryTypes.photo, entryTypes.text, entryTypes.audio].join(" · ")}</span>
       </div>
     </section>
   );
