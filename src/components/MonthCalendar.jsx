@@ -1,4 +1,3 @@
-import { Headphones, Image, Quote } from "lucide-react";
 import { entryTypes } from "../data/entryTypes.js";
 import EntryPreview from "./EntryPreview.jsx";
 import { calendarDays, dateKey } from "../utils/calendar.js";
@@ -49,9 +48,9 @@ export default function MonthCalendar({ month, posts, entryDates, onSelect, load
       <div className="calendar-caption">
         <span>{String(month.getMonth() + 1).padStart(2, "0")} / {month.getFullYear()}</span>
         <div className="format-key">
-          <span><Image size={13} /> {entryTypes.photo}</span>
-          <span><Quote size={13} /> {entryTypes.text}</span>
-          <span><Headphones size={13} /> {entryTypes.audio}</span>
+          <span>{entryTypes.photo}</span>
+          <span>{entryTypes.text}</span>
+          <span>{entryTypes.audio}</span>
         </div>
       </div>
     </section>

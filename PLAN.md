@@ -566,3 +566,7 @@ component fixture, plus the add-entry callback. Offline checks and build pass.
 The in-conversation mock uses theme-aware charcoal, warm-white, muted-green,
 and softened-rust colors. Phila asked to discuss adapting this palette to the
 website; dark mode is not enabled by this change and needs a separate preview.
+
+Phila also selected the mock's text-only calendar legend: “In light · In words
+· In voice”. Remove the three legend icons, retain the format colors, and use
+quiet neutral dot separators with compact spacing on phones.

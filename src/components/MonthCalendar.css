@@ -64,13 +64,18 @@
 
 .format-key {
   display: flex;
-  gap: 20px;
+  gap: 8px;
 }
 
 .format-key > span {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+
+.format-key > span + span::before {
+  content: "·";
+  color: var(--muted);
 }
 
 .format-key > span:nth-child(1) {
@@ -121,21 +126,15 @@
   }
 
   .format-key {
-    gap: 12px;
+    gap: 6px;
   }
 
   .format-key > span {
-    gap: 4px;
+    gap: 6px;
   }
 
   .calendar-caption {
     padding-top: 13px;
     font-size: 9px;
-  }
-}
-
-@media (max-width: 359px) {
-  .format-key {
-    gap: 8px;
   }
 }
