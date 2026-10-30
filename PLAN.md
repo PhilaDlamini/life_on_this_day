@@ -551,3 +551,18 @@ The existing component/hook/I/O/shared-policy separation remains appropriate.
 
 Validation: twenty-one offline and eleven emulator checks, production build,
 and both dependency audits. No live diary entries or media changed during review.
+
+## Inline authorship and owner controls — October 30, 2026
+
+Phila selected the inline masthead mock: “An open journal * Phila Dlamini”,
+with a centered rust asterisk replacing the sun. Signed-out visitors see
+“Owner sign-in”. The signed-in owner sees only a subtle gray circular +,
+accessible as “Add an entry”; the Sign out text is removed. The plus preserves
+archive readiness checks and opens the existing editor. Remove the post-publish
+“Kept for …” notice; successful publication still closes the editor and refreshes
+the archive. Verified signed-out and owner states at 320px with an isolated
+component fixture, plus the add-entry callback. Offline checks and build pass.
+
+The in-conversation mock uses theme-aware charcoal, warm-white, muted-green,
+and softened-rust colors. Phila asked to discuss adapting this palette to the
+website; dark mode is not enabled by this change and needs a separate preview.

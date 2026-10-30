@@ -17,7 +17,6 @@ export default function App() {
   const { posts, loading, error, retry } = useArchive();
   const ownerAuth = useOwnerAuth();
   const [editorOpen, setEditorOpen] = useState(false);
-  const [notice, setNotice] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const title = dailyTitle();
   const months = archiveMonths(posts, dateFromKey(journalDay()));
@@ -31,7 +30,6 @@ export default function App() {
           <OwnerAccess auth={ownerAuth} canPublish={!loading && !error} onNewEntry={() => setEditorOpen(true)} />
         </JournalHeader>
         <main>
-          {notice && <p className="archive-status" role="status">{notice}</p>}
           {loading && <p className="archive-status" role="status">Opening the journal…</p>}
           {error && (
             <div className="archive-status" role="alert">
@@ -69,9 +67,8 @@ export default function App() {
           <EntryEditor
             posts={posts}
             onClose={() => setEditorOpen(false)}
-            onPublished={(date) => {
+            onPublished={() => {
               setEditorOpen(false);
-              setNotice(`Kept for ${date}.`);
               retry();
             }}
           />

@@ -14,12 +14,15 @@
   gap: 12px;
   font-size: 13px;
   font-weight: 550;
+  white-space: nowrap;
 }
 
-.journal-mark {
-  display: flex;
-  align-items: center;
+.masthead-star {
   color: var(--red);
+  font-family: Georgia, serif;
+  font-size: 17px;
+  line-height: 1;
+  transform: translateY(3px);
 }
 
 .introduction {
@@ -52,7 +55,7 @@
 
   .masthead {
     font-size: 11px;
-    gap: 8px;
+    gap: 7px;
   }
 
   .introduction {

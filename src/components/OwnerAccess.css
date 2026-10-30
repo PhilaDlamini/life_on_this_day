@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+  min-height: 36px;
   max-width: 55%;
   color: var(--muted);
   font-size: 11px;
@@ -17,6 +18,33 @@
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.owner-add {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #edf0eb;
+  color: #292d2b;
+}
+
+/* Keep the quiet 36px circle while giving fingers a 44px target. */
+.owner-add::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+}
+
+.owner-add:hover:not(:disabled) {
+  background: #e2e7df;
 }
 
 .owner-error {

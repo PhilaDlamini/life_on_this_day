@@ -1,4 +1,3 @@
-import { Sun } from "lucide-react";
 import { titleAccents } from "../data/titles.js";
 import "./JournalHeader.css";
 
@@ -9,8 +8,9 @@ export default function JournalHeader({ title, children }) {
     <>
       <header className="site-header">
         <div className="masthead">
-          <span className="journal-mark"><Sun size={22} strokeWidth={1.5} /></span>
           <span>An open journal</span>
+          <span className="masthead-star" aria-hidden="true">*</span>
+          <span>Phila Dlamini</span>
         </div>
         {children}
       </header>

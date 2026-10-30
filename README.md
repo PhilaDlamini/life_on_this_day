@@ -7,7 +7,7 @@ explains the components and data flow.
 
 Published site: **https://philadlamini.github.io/life_on_this_day/**
 
-Sign in with your owner Google account, choose **Add an entry**, choose one format,
+Sign in with your owner Google account, tap the circular **+** (Add an entry), choose one format,
 preview, then **Publish**. Today is selected automatically using Los Angeles /
 Pacific time, including daylight saving; there is no date picker. Confirm that
 the moment is final: published entries cannot be edited, replaced, or deleted.
