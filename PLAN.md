@@ -622,3 +622,12 @@ of System with correct browser metadata, and no overflow at 320px. The appearanc
 fixture now uses the same application helper. Twenty-three offline checks and
 the production build pass, including invalid/blocked-storage cases. No live
 entry or media changed.
+
+## Appearance picker refinement — October 30, 2026
+
+Phila requested a more fitting visual treatment for the appearance control.
+Use a compact soft gray pill with a thin monitor/sun/moon icon for the current
+mode and a small matching chevron. Keep Appearance as its accessible label
+without repeating it visibly. Retain the native select, System/Light/Dark
+options, saved preference, and keyboard behavior. Checked light/dark styling
+at 320px and mode changes; build passes. No theme policy or publishing changes.

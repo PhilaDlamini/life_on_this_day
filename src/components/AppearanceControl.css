@@ -1,7 +1,7 @@
 .appearance-control {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
   min-height: 44px;
 }
 
@@ -9,9 +9,26 @@
   font: inherit;
   color: inherit;
   border: 0;
-  background: transparent;
-  padding: 6px 0;
+  border-radius: 999px;
+  background: var(--control);
+  padding: 8px 27px 8px 31px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
 }
+
+.appearance-control select:hover {
+  background: var(--control-focus);
+}
+
+.appearance-icon,
+.appearance-chevron {
+  position: absolute;
+  pointer-events: none;
+}
+
+.appearance-icon { left: 10px; }
+.appearance-chevron { right: 9px; }
 
 .footer-details {
   display: flex;
