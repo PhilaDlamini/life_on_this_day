@@ -1,0 +1,26 @@
+.appearance-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+}
+
+.appearance-control select {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: transparent;
+  padding: 6px 0;
+}
+
+.footer-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+@media (max-width: 600px) {
+  .footer-details { width: 100%; }
+}

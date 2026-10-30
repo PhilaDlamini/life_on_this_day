@@ -603,3 +603,22 @@ toolbar, Publish fill, text/photo/audio viewers, no autoplay, unfiltered full
 photos, direct full-screen dismissal, no phone overflow, and identical caption
 typography. Twenty-one offline checks and production build pass. No live diary
 entry or media was created or modified.
+
+## Manual appearance selection and quieter masthead — October 30, 2026
+
+Phila approved the footer mock's Appearance: System/Light/Dark selector. Default
+to System; remember explicit choices in local storage on this device. Keep
+working in memory when storage is blocked. The palette now uses CSS light-dark()
+pairs and color-scheme, with a root data-appearance override for explicit choices.
+System follows device changes natively. AppearanceControl owns the small local
+selection; utils/appearance.js handles storage and matching browser theme-color
+metadata. A short early index.html script restores an override before styles
+load. No database preferences, dependencies, or global React context added.
+
+Phila also requested removing the name from the top: the masthead is now
+“An open journal *”. The footer retains “Phila Dlamini * 2026” beside the selector.
+Verified manual light/dark selection, dark persistence after reload, restoration
+of System with correct browser metadata, and no overflow at 320px. The appearance
+fixture now uses the same application helper. Twenty-three offline checks and
+the production build pass, including invalid/blocked-storage cases. No live
+entry or media changed.

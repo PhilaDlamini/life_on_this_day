@@ -10,7 +10,6 @@ export default function JournalHeader({ title, children }) {
         <div className="masthead">
           <span>An open journal</span>
           <span className="masthead-star" aria-hidden="true">*</span>
-          <span>Phila Dlamini</span>
         </div>
         {children}
       </header>

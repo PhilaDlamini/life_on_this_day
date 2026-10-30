@@ -31,8 +31,9 @@ another. Failed saves retain the form and leave existing entries intact.
 entries, stable while browsing and reshuffled when reopening/refreshing.
 
 Visitors read without signing in. Entries and media are public when published.
-Appearance follows the device's light/dark setting automatically. Dark mode
-uses charcoal surfaces, warm text, and softer rust; photos retain their colors.
+The footer's Appearance control offers System, Light, and Dark. System follows
+the device automatically; your selection is remembered on this device. Dark
+mode uses charcoal surfaces, warm text, and softer rust; photos retain their colors.
 Private drafts and an export tool remain later work. A one-minute
 limit is enforced by the owner editor's decoded-audio check and publishing function's duration
 validation; Storage rules enforce file size/type and cannot independently decode
@@ -100,7 +101,7 @@ Firebase Auth session. Basic flow follows the official
 
 ## Checks
 
-`npm test` runs twenty-one offline date/content/media-limit/highlight/publishing/formatting tests. Emulator-only rule tests are
+`npm test` runs twenty-three offline date/content/media-limit/highlight/publishing/formatting/appearance tests. Emulator-only rule tests are
 explicitly skipped in that command. With Firebase CLI and Java 21+ on PATH, run:
 
 ```sh

@@ -4,8 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fafbf9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#191c19" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" data-scheme="light" content="#fafbf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" data-scheme="dark" content="#191c19" media="(prefers-color-scheme: dark)" />
+    <script>
+      // Apply a saved override before styles load, avoiding a theme flash.
+      try {
+        const appearance = localStorage.getItem("journal-appearance");
+        if (appearance === "light" || appearance === "dark") {
+          document.documentElement.dataset.appearance = appearance;
+          document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+            meta.media = meta.dataset.scheme === appearance ? "all" : "not all";
+          });
+        }
+      } catch { /* System appearance works when local storage is unavailable. */ }
+    </script>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="description" content="A small personal archive of photographs, thoughts, and voice notes." />
     <title>Life on This Day</title>

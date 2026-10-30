@@ -4,6 +4,7 @@ import MonthCalendar from "./components/MonthCalendar.jsx";
 import ArchiveHighlights from "./components/ArchiveHighlights.jsx";
 import EntryViewer from "./components/EntryViewer.jsx";
 import OwnerAccess from "./components/OwnerAccess.jsx";
+import AppearanceControl from "./components/AppearanceControl.jsx";
 import useOwnerAuth from "./hooks/useOwnerAuth.js";
 import useArchive from "./hooks/useArchive.js";
 import { journalDay } from "../functions/shared/journalDay.js";
@@ -53,7 +54,10 @@ export default function App() {
         </main>
         <footer className="site-footer">
           <span>A few things I didn't want to forget.</span>
-          <span>Phila Dlamini <span className="footer-star">*</span> 2026</span>
+          <div className="footer-details">
+            <span>Phila Dlamini <span className="footer-star">*</span> 2026</span>
+            <AppearanceControl />
+          </div>
         </footer>
       </div>
       <EntryViewer

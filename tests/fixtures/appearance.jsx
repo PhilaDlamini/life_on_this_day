@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import JournalHeader from "../../src/components/JournalHeader.jsx";
 import MonthCalendar from "../../src/components/MonthCalendar.jsx";
@@ -6,7 +6,7 @@ import EntryViewer from "../../src/components/EntryViewer.jsx";
 import OwnerAccess from "../../src/components/OwnerAccess.jsx";
 import EntryEditor from "../../src/components/editor/EntryEditor.jsx";
 import { samplePosts } from "../../src/data/samplePosts.js";
-import themeCSS from "../../src/styles.css?inline";
+import { applyAppearance } from "../../src/utils/appearance.js";
 import "../../src/styles.css";
 
 // Exercise the actual palette rules without changing the computer's appearance.
@@ -15,11 +15,9 @@ function Fixture() {
   const [appearance, setAppearance] = useState("dark");
   const [selectedDate, onSelect] = useState(null);
   const [editorOpen, setEditorOpen] = useState(false);
-  const css = themeCSS.replace("(prefers-color-scheme: dark)",
-    appearance === "dark" ? "(min-width: 0px)" : "(min-width: 100000px)");
+  useEffect(() => { applyAppearance(appearance); }, [appearance]);
 
   return <div onSubmitCapture={(event) => { event.preventDefault(); event.stopPropagation(); }}>
-    <style>{css}</style>
     <div className="journal">
       <p className="archive-status">Local appearance preview · publishing disabled</p>
       <div role="group" aria-label="Preview appearance">

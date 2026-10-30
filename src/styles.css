@@ -3,69 +3,41 @@
 /* Shared theme, page layout, and accessible controls. */
 :root {
   font-family: 'DM Sans', sans-serif;
-  color-scheme: light;
+  color-scheme: light dark;
   color: var(--ink);
   background: var(--page);
   font-synthesis: none;
-  --page: #fafbf9;
-  --surface: #fff;
-  --ink: #292d2b;
-  --text: #111;
-  --photo-date-text: #303530;
-  --line: #dce1da;
-  --calendar-line: #bcc4b9;
-  --muted: #767c75;
-  --day-muted: #8f958d;
-  --outside: #f5f7f3;
-  --red: #c54b37;
-  --green: #33795b;
+  --page: light-dark(#fafbf9, #191c19);
+  --surface: light-dark(#fff, #202520);
+  --ink: light-dark(#292d2b, #e7eae4);
+  --text: light-dark(#111, #e7eae4);
+  --photo-date-text: light-dark(#303530, #e7eae4);
+  --line: light-dark(#dce1da, #3a4238);
+  --calendar-line: light-dark(#bcc4b9, #566251);
+  --muted: light-dark(#767c75, #a3aba0);
+  --day-muted: light-dark(#8f958d, #a3aba0);
+  --outside: light-dark(#f5f7f3, #191c19);
+  --red: light-dark(#c54b37, #df8772);
+  --green: light-dark(#33795b, #8bb59a);
   --publish-background: #33795b;
-  --control: #edf0eb;
-  --control-focus: #e2e7df;
-  --highlight-hover: #f1f4ef;
-  --photo-tint: #f4ede8;
-  --audio-tint: #eaf3ec;
-  --editor: #fffdf9;
-  --editor-line: #e8dfd7;
-  --toolbar: #efede8;
-  --placeholder: #a39c94;
-  --file-background: #f7e9e2;
-  --file-text: #9c3b2b;
-  --viewer-backdrop: rgb(21 29 26 / 55%);
-  --editor-backdrop: rgb(42 35 30 / 42%);
+  --control: light-dark(#edf0eb, #2c332b);
+  --control-focus: light-dark(#e2e7df, #3a4238);
+  --highlight-hover: light-dark(#f1f4ef, #252c24);
+  --photo-tint: light-dark(#f4ede8, #302923);
+  --audio-tint: light-dark(#eaf3ec, #24352b);
+  --editor: light-dark(#fffdf9, #202520);
+  --editor-line: light-dark(#e8dfd7, #3a4238);
+  --toolbar: light-dark(#efede8, #2c332b);
+  --placeholder: light-dark(#a39c94, #a3aba0);
+  --file-background: light-dark(#f7e9e2, #342a24);
+  --file-text: light-dark(#9c3b2b, #df8772);
+  --viewer-backdrop: light-dark(rgb(21 29 26 / 55%), rgb(0 0 0 / 60%));
+  --editor-backdrop: light-dark(rgb(42 35 30 / 42%), rgb(0 0 0 / 60%));
 }
 
-/* Follow the device appearance; components share the same semantic palette. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --page: #191c19;
-    --surface: #202520;
-    --ink: #e7eae4;
-    --text: #e7eae4;
-    --photo-date-text: #e7eae4;
-    --line: #3a4238;
-    --calendar-line: #566251;
-    --muted: #a3aba0;
-    --day-muted: #a3aba0;
-    --outside: #191c19;
-    --red: #df8772;
-    --green: #8bb59a;
-    --control: #2c332b;
-    --control-focus: #3a4238;
-    --highlight-hover: #252c24;
-    --photo-tint: #302923;
-    --audio-tint: #24352b;
-    --editor: #202520;
-    --editor-line: #3a4238;
-    --toolbar: #2c332b;
-    --placeholder: #a3aba0;
-    --file-background: #342a24;
-    --file-text: #df8772;
-    --viewer-backdrop: rgb(0 0 0 / 60%);
-    --editor-backdrop: rgb(0 0 0 / 60%);
-  }
-}
+/* System is automatic; an explicit preference overrides the native choice. */
+:root[data-appearance="light"] { color-scheme: light; }
+:root[data-appearance="dark"] { color-scheme: dark; }
 
 * {
   box-sizing: border-box;

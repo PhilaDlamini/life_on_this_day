@@ -59,10 +59,12 @@ development. Global styles define fonts, colors, page width, focus outlines,
 and shared icon buttons.
 
 `styles.css` defines shared color variables for page/surface/text, controls,
-calendar lines, and the editor. A `prefers-color-scheme: dark` media query supplies
-the charcoal palette and native dark form/media controls. Components reference
-these variables; no React theme state, saved preference, or new dependency is
-needed. `index.html` also supplies matching light/dark browser theme colors.
+calendar lines, and the editor using CSS `light-dark()` pairs. Native
+`color-scheme` chooses the device appearance by default; a root data attribute
+can force Light or Dark. The small footer AppearanceControl owns the selected
+preference; utils/appearance.js reads/saves it locally and updates browser theme
+metadata. The early script in index.html restores a saved override before CSS
+loads, avoiding a flash of the device theme. No Firebase setting or new dependency.
 
 ## 2. Choosing the title and supplying entries
 
@@ -167,7 +169,7 @@ No router or shared authentication context is needed for this one screen.
 
 ## Verification
 
-`npm test` runs twenty-one focused offline tests using Node's built-in runner.
+`npm test` runs twenty-three focused offline tests using Node's built-in runner.
 The dedicated rule tests use Firebase's testing library and a local emulator. They cover date keys, empty archives, skipped months, ordering,
 leap years, six-week grids, daily title stability, and remote entry validation. Eleven emulator tests are skipped
 unless the emulator is running. Run under a timezone such
