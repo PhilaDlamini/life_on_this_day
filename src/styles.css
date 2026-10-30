@@ -3,13 +3,68 @@
 /* Shared theme, page layout, and accessible controls. */
 :root {
   font-family: 'DM Sans', sans-serif;
-  color: #292d2b;
-  background: #fafbf9;
+  color-scheme: light;
+  color: var(--ink);
+  background: var(--page);
   font-synthesis: none;
+  --page: #fafbf9;
+  --surface: #fff;
+  --ink: #292d2b;
+  --text: #111;
+  --photo-date-text: #303530;
   --line: #dce1da;
+  --calendar-line: #bcc4b9;
   --muted: #767c75;
+  --day-muted: #8f958d;
+  --outside: #f5f7f3;
   --red: #c54b37;
   --green: #33795b;
+  --publish-background: #33795b;
+  --control: #edf0eb;
+  --control-focus: #e2e7df;
+  --highlight-hover: #f1f4ef;
+  --photo-tint: #f4ede8;
+  --audio-tint: #eaf3ec;
+  --editor: #fffdf9;
+  --editor-line: #e8dfd7;
+  --toolbar: #efede8;
+  --placeholder: #a39c94;
+  --file-background: #f7e9e2;
+  --file-text: #9c3b2b;
+  --viewer-backdrop: rgb(21 29 26 / 55%);
+  --editor-backdrop: rgb(42 35 30 / 42%);
+}
+
+/* Follow the device appearance; components share the same semantic palette. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #191c19;
+    --surface: #202520;
+    --ink: #e7eae4;
+    --text: #e7eae4;
+    --photo-date-text: #e7eae4;
+    --line: #3a4238;
+    --calendar-line: #566251;
+    --muted: #a3aba0;
+    --day-muted: #a3aba0;
+    --outside: #191c19;
+    --red: #df8772;
+    --green: #8bb59a;
+    --control: #2c332b;
+    --control-focus: #3a4238;
+    --highlight-hover: #252c24;
+    --photo-tint: #302923;
+    --audio-tint: #24352b;
+    --editor: #202520;
+    --editor-line: #3a4238;
+    --toolbar: #2c332b;
+    --placeholder: #a3aba0;
+    --file-background: #342a24;
+    --file-text: #df8772;
+    --viewer-backdrop: rgb(0 0 0 / 60%);
+    --editor-backdrop: rgb(0 0 0 / 60%);
+  }
 }
 
 * {
@@ -69,7 +124,7 @@ a {
   top: -60px;
   z-index: 5;
   padding: 12px;
-  background: white;
+  background: var(--surface);
 }
 
 .skip-link:focus {
@@ -98,7 +153,7 @@ a {
 }
 
 .icon-button:hover:not(:disabled) {
-  background: #edf0eb;
+  background: var(--control);
   border-color: var(--line);
 }
 

@@ -579,3 +579,27 @@ For exact caption consistency, render the format labels and literal dot
 separators in one plain span, matching the adjacent date span. Remove the
 legend's nested flex layout and all dedicated legend styles. Browser inspection
 confirmed matching DM Sans, 400 weight, size, line height, and muted color.
+
+## Automatic dark appearance — October 30, 2026
+
+Phila approved implementing the dark preview. Follow the device's
+prefers-color-scheme setting with a CSS-only palette; preserve the original light
+colors. Shared semantic variables in styles.css cover page/surface/text,
+calendar lines, gray controls, rust, audio tints, and the editor/formatting tools.
+Dark colors match the preview: #191c19 page, #202520 surfaces, #e7eae4 text,
+#a3aba0 secondary text, #566251 calendar lines, and #df8772 rust. Separate readable
+audio-green text from the unchanged #33795b Publish fill. Photos are unfiltered;
+the full-screen photo view keeps its existing dark background in both modes.
+
+Use native color-scheme and theme-color metadata so form/audio controls and the
+browser chrome follow the palette too. No theme toggle, storage, React theme
+state, Firebase change, or new dependency. The new appearance fixture uses actual
+components and fictional samples, intercepts submissions, and exercises both
+palettes without changing system settings.
+
+Verified automatic light selection in the real app and both actual CSS palettes
+in the fixture at desktop, 390px, and 320px widths. Checked editor/preview text,
+toolbar, Publish fill, text/photo/audio viewers, no autoplay, unfiltered full
+photos, direct full-screen dismissal, no phone overflow, and identical caption
+typography. Twenty-one offline checks and production build pass. No live diary
+entry or media was created or modified.

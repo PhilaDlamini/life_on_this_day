@@ -5,13 +5,13 @@
   border-radius: 6px;
   width: min(760px, calc(100% - 40px));
   max-height: calc(100dvh - 40px);
-  background: #fff;
-  color: #292d2b;
+  background: var(--surface);
+  color: var(--ink);
   overflow: auto;
 }
 
 .entry-dialog::backdrop {
-  background: rgb(21 29 26 / 55%);
+  background: var(--viewer-backdrop);
   backdrop-filter: blur(3px);
 }
 
@@ -31,7 +31,7 @@
 /* Dialog autofocus stays visible without the shared rust outline. */
 .entry-dialog .viewer-close:focus-visible {
   outline: none;
-  background: #e2e7df;
+  background: var(--control-focus);
 }
 
 .entry-kind {
@@ -46,7 +46,7 @@
 }
 
 .kind-text {
-  color: #111;
+  color: var(--text);
 }
 
 .kind-audio {
@@ -89,9 +89,9 @@
 }
 
 .viewer-text {
-  background: #fff;
+  background: var(--surface);
   padding: 12px 28px 32px;
-  color: #111;
+  color: var(--text);
 }
 
 .viewer-text p {
@@ -108,7 +108,7 @@
   align-items: center;
   gap: 28px;
   padding: 40px;
-  background: #eaf3ec;
+  background: var(--audio-tint);
   color: var(--green);
 }
 
@@ -221,5 +221,5 @@
 
 .fullscreen-close:hover:not(:disabled),
 .fullscreen-close:focus-visible {
-  color: #292d2b;
+  color: var(--ink);
 }

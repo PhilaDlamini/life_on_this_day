@@ -58,6 +58,12 @@ React's `createRoot`. Strict Mode helps surface missing effect cleanup during
 development. Global styles define fonts, colors, page width, focus outlines,
 and shared icon buttons.
 
+`styles.css` defines shared color variables for page/surface/text, controls,
+calendar lines, and the editor. A `prefers-color-scheme: dark` media query supplies
+the charcoal palette and native dark form/media controls. Components reference
+these variables; no React theme state, saved preference, or new dependency is
+needed. `index.html` also supplies matching light/dark browser theme colors.
+
 ## 2. Choosing the title and supplying entries
 
 `App` receives published posts from `useArchive()` and calls `dailyTitle()`. The title list is data;

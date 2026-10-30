@@ -4,7 +4,7 @@
   padding: 4px;
   margin-bottom: 8px;
   border-radius: 10px;
-  background: #efede8;
+  background: var(--toolbar);
 }
 
 .text-toolbar button {
@@ -16,21 +16,21 @@
   justify-content: center;
   border-radius: 6px;
   background: transparent;
-  color: #292d2b;
+  color: var(--ink);
   font-size: 16px;
 }
 
 .text-toolbar button[aria-pressed='true'] {
-  background: #fffdf9;
-  color: #111;
+  background: var(--editor);
+  color: var(--text);
   box-shadow: 0 1px 3px rgb(42 35 30 / 12%);
 }
 
 .rich-text-input {
   min-height: 180px;
   padding: 10px 0;
-  border-bottom: 1px solid #e8dfd7;
-  color: #111;
+  border-bottom: 1px solid var(--editor-line);
+  color: var(--text);
   font-size: 16px;
   line-height: 1.7;
   white-space: pre-wrap;
@@ -43,6 +43,6 @@
   content: attr(data-placeholder);
   float: left;
   height: 0;
-  color: #a39c94;
+  color: var(--placeholder);
   pointer-events: none;
 }

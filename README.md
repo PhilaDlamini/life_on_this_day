@@ -31,6 +31,8 @@ another. Failed saves retain the form and leave existing entries intact.
 entries, stable while browsing and reshuffled when reopening/refreshing.
 
 Visitors read without signing in. Entries and media are public when published.
+Appearance follows the device's light/dark setting automatically. Dark mode
+uses charcoal surfaces, warm text, and softer rust; photos retain their colors.
 Private drafts and an export tool remain later work. A one-minute
 limit is enforced by the owner editor's decoded-audio check and publishing function's duration
 validation; Storage rules enforce file size/type and cannot independently decode
@@ -159,6 +161,9 @@ An isolated browser formatting fixture is available locally at
 `/tests/fixtures/text-editor.html`; it never connects to Firebase or publishes.
 `/tests/fixtures/composer.html` shows the real composer, with form submission
 intercepted before the publishing handler runs.
+`/tests/fixtures/appearance.html` previews both palettes with fictional entries,
+the actual viewer/editor, and publishing disabled. Its Light/Dark controls apply
+the real CSS palette without changing the computer's appearance.
 
 Before a release, run `npm test`, `npm run test:rules`, and `npm run build`.
 A local Pages-path smoke build is `BASE_PATH=/life_on_this_day/ npm run build`.
