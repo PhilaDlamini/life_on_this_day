@@ -570,3 +570,7 @@ website; dark mode is not enabled by this change and needs a separate preview.
 Phila also selected the mock's text-only calendar legend: “In light · In words
 · In voice”. Remove the three legend icons, retain the format colors, and use
 quiet neutral dot separators with compact spacing on phones.
+
+Phila refined the legend to use the same muted gray as the adjacent month/year
+caption for all three labels. Remove format-specific colors from this legend;
+the shared calendar-caption style supplies its color and typography.

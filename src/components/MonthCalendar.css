@@ -78,18 +78,6 @@
   color: var(--muted);
 }
 
-.format-key > span:nth-child(1) {
-  color: var(--red);
-}
-
-.format-key > span:nth-child(2) {
-  color: #111;
-}
-
-.format-key > span:nth-child(3) {
-  color: var(--green);
-}
-
 .empty-month {
   border: 1px solid var(--line);
   border-top: 0;
